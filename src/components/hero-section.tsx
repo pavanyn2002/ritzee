@@ -1,21 +1,76 @@
+
+'use client';
+
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { ScrollAnimation } from './scroll-animation';
+import { products } from '@/lib/products';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 export default function HeroSection() {
   return (
     <section className="relative w-full h-[calc(100vh-4rem)] overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="https://picsum.photos/seed/hero1/1800/1200"
-          alt="Ritzee Wear background"
-          fill
-          className="object-cover opacity-20"
-          data-ai-hint="fashion model"
-          priority
-        />
+        <Carousel
+          className="w-full h-full"
+          plugins={[
+            Autoplay({
+              delay: 3000,
+              stopOnInteraction: false,
+              stopOnMouseEnter: true,
+            }),
+          ]}
+          opts={{
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {products.map((product) => (
+              <CarouselItem key={product.id}>
+                <div className="relative w-full h-[calc(100vh-4rem)]">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover opacity-20"
+                    data-ai-hint={product.imageHint}
+                    priority={products.indexOf(product) === 0}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+            {/* Adding one more for visual balance */}
+            <CarouselItem key="extra-1">
+              <div className="relative w-full h-[calc(100vh-4rem)]">
+                <Image
+                  src="https://picsum.photos/seed/hero-extra/1800/1200"
+                  alt="Extra fashion shot"
+                  fill
+                  className="object-cover opacity-20"
+                  data-ai-hint="fashion runway"
+                />
+              </div>
+            </CarouselItem>
+             <CarouselItem key="extra-2">
+              <div className="relative w-full h-[calc(100vh-4rem)]">
+                <Image
+                  src="https://picsum.photos/seed/hero-extra-2/1800/1200"
+                  alt="Extra fashion shot 2"
+                  fill
+                  className="object-cover opacity-20"
+                  data-ai-hint="clothing detail"
+                />
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
       </div>
       <div className="container px-4 md:px-6 z-10 text-center">
@@ -32,20 +87,28 @@ export default function HeroSection() {
           </ScrollAnimation>
           <ScrollAnimation delay={100}>
             <p className="max-w-[600px] text-foreground/80 md:text-xl">
-              Unleash Your Alter Ego. Explore limited edition drops and experience fashion in 360°.
+              Unleash Your Alter Ego. Explore limited edition drops and
+              experience fashion in 360°.
             </p>
           </ScrollAnimation>
           <ScrollAnimation delay={200}>
             <div className="flex gap-4">
-              <Button asChild size="lg" className="hard-shadow font-bold text-lg px-8 py-6 rounded-none border-2 border-primary-foreground">
+              <Button
+                asChild
+                size="lg"
+                className="hard-shadow font-bold text-lg px-8 py-6 rounded-none border-2 border-primary-foreground"
+              >
                 <Link href="#latest-drops">
                   Explore Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="font-bold text-lg px-8 py-6 rounded-none border-2">
-                  <Link href="#">
-                      Learn More
-                  </Link>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="font-bold text-lg px-8 py-6 rounded-none border-2"
+              >
+                <Link href="#">Learn More</Link>
               </Button>
             </div>
           </ScrollAnimation>
