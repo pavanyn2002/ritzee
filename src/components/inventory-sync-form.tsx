@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { getSyncSuggestions } from '@/app/admin/inventory-sync/actions';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -41,7 +42,7 @@ const exampleJson = JSON.stringify(
 );
 
 export default function InventorySyncForm() {
-  const [state, formAction] = useFormState(getSyncSuggestions, initialState);
+  const [state, formAction] = useActionState(getSyncSuggestions, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
