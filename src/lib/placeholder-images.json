@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "Edgy fashion model in a futuristic city",
+      "imageUrl": "https://images.unsplash.com/photo-1562572159-4efc207f5aff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwbW9kZWx8ZW58MHx8fHwxNzY3MTc1NDMwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fashion model"
+    },
+    {
+      "id": "product-tshirt-1",
+      "description": "Front view of a black t-shirt",
+      "imageUrl": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0c2hpcnQlMjBibGFja3xlbnwwfHx8fDE3NjcyMDk5OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tshirt black"
+    },
+    {
+      "id": "product-tshirt-2",
+      "description": "Front view of a white t-shirt",
+      "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0c2hpcnQlMjB3aGl0ZXxlbnwwfHx8fDE3NjcyMDk5OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tshirt white"
+    },
+    {
+      "id": "product-tshirt-3",
+      "description": "Front view of a graphic t-shirt",
+      "imageUrl": "https://images.unsplash.com/photo-1760808573899-fd8d0f5ce90e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxncmFwaGljJTIwdHNoaXJ0fGVufDB8fHx8MTc2NzIwOTk5MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graphic tshirt"
+    }
+  ]
 }

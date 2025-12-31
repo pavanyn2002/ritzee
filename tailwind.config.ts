@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        headline: ['Space Grotesk', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -88,10 +88,24 @@ export default {
             height: '0',
           },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        'hard-shadow-pop': {
+          '0%': {
+            'box-shadow': '4px 4px 0px 0px hsl(var(--primary))'
+          },
+          '100%': {
+            'box-shadow': '8px 8px 0px 0px hsl(var(--primary))'
+          }
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'marquee': 'marquee 30s linear infinite',
+        'hard-shadow-pop': 'hard-shadow-pop 0.15s ease-out forwards',
       },
     },
   },
