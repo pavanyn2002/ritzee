@@ -10,6 +10,9 @@ import React from 'react';
 export const metadata: Metadata = {
   title: 'Ritzee Wear',
   description: 'High-end fashion for the modern era.',
+  icons: {
+    icon: '/favicon.svg',
+  }
 };
 
 export default function RootLayout({
