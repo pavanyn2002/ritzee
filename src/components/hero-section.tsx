@@ -15,6 +15,22 @@ import {
 import Autoplay from 'embla-carousel-autoplay';
 
 export default function HeroSection() {
+  const heroImages = [
+    ...products.map(p => ({id: p.id, image: p.image, name: p.name, imageHint: p.imageHint})),
+    {
+      id: 'extra-1',
+      image: '/products/lifestyle1.png',
+      name: 'Extra fashion shot',
+      imageHint: 'fashion runway'
+    },
+    {
+      id: 'extra-2',
+      image: '/products/lifestyle2.png',
+      name: 'Extra fashion shot 2',
+      imageHint: 'clothing detail'
+    }
+  ]
+
   return (
     <section className="relative w-full h-[calc(100vh-4rem)] overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 z-0">
@@ -32,7 +48,7 @@ export default function HeroSection() {
           }}
         >
           <CarouselContent>
-            {products.map((product) => (
+            {heroImages.map((product, index) => (
               <CarouselItem key={product.id}>
                 <div className="relative w-full h-[calc(100vh-4rem)]">
                   <Image
@@ -41,34 +57,11 @@ export default function HeroSection() {
                     fill
                     className="object-cover opacity-20"
                     data-ai-hint={product.imageHint}
-                    priority={products.indexOf(product) === 0}
+                    priority={index === 0}
                   />
                 </div>
               </CarouselItem>
             ))}
-            {/* Adding one more for visual balance */}
-            <CarouselItem key="extra-1">
-              <div className="relative w-full h-[calc(100vh-4rem)]">
-                <Image
-                  src="https://picsum.photos/seed/hero-extra/1800/1200"
-                  alt="Extra fashion shot"
-                  fill
-                  className="object-cover opacity-20"
-                  data-ai-hint="fashion runway"
-                />
-              </div>
-            </CarouselItem>
-             <CarouselItem key="extra-2">
-              <div className="relative w-full h-[calc(100vh-4rem)]">
-                <Image
-                  src="https://picsum.photos/seed/hero-extra-2/1800/1200"
-                  alt="Extra fashion shot 2"
-                  fill
-                  className="object-cover opacity-20"
-                  data-ai-hint="clothing detail"
-                />
-              </div>
-            </CarouselItem>
           </CarouselContent>
         </Carousel>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
