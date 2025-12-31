@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { products } from '@/lib/products';
 import ProductViewer from '@/components/product-viewer';
 import { Button } from '@/components/ui/button';
@@ -8,15 +8,10 @@ import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
 import { useToast } from '@/hooks/use-toast';
 
-type ProductPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.slug === params.slug);
+export default function ProductPage() {
+  const params = useParams();
+  const slug = params.slug;
+  const product = products.find((p) => p.slug === slug);
   const { addToCart } = useCart();
   const { toast } = useToast();
 
