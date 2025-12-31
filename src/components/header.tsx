@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -44,7 +45,7 @@ export default function Header() {
           <Logo />
         </div>
         
-        <div className="md:hidden">
+        <div className="flex-1 md:hidden">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
