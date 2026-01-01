@@ -1,3 +1,4 @@
+
 'use client';
 
 import ProductCard from '@/components/product-card';
@@ -13,6 +14,9 @@ import {
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
@@ -46,9 +50,14 @@ export default function ShopPage() {
               <div key={category}>
                 {!categoryParam && (
                   <ScrollAnimation>
-                    <h2 className="text-3xl font-headline font-bold tracking-tighter mb-8">
-                      {category}
-                    </h2>
+                    <div className="flex justify-between items-center mb-8">
+                      <h2 className="text-3xl font-headline font-bold tracking-tighter">
+                        {category}
+                      </h2>
+                      <Button asChild variant="outline" className="hidden sm:flex">
+                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2" /></Link>
+                      </Button>
+                    </div>
                   </ScrollAnimation>
                 )}
                 <Carousel
@@ -79,6 +88,13 @@ export default function ShopPage() {
                   <CarouselPrevious className="hidden lg:flex" />
                   <CarouselNext className="hidden lg:flex" />
                 </Carousel>
+                {!categoryParam && (
+                   <div className="mt-4 text-center sm:hidden">
+                     <Button asChild variant="outline">
+                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
+                      </Button>
+                   </div>
+                )}
               </div>
             );
           })}
