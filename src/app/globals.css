@@ -104,8 +104,8 @@
     color: hsl(var(--primary));
     text-shadow: 2px 2px 0px hsl(var(--accent));
   }
-
-  .glitch-load {
+  
+  .glitch.glitch-load {
     animation: glitch-anim 3s 1;
   }
 
@@ -122,17 +122,52 @@
     clip: rect(0, 900px, 0, 0);
   }
 
-  .glitch-load::before {
+ .glitch.glitch-load::before {
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
     animation: glitch-anim-2 2s 1 linear alternate-reverse;
   }
 
-  .glitch-load::after {
+ .glitch.glitch-load::after {
     left: -2px;
     text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
     animation: glitch-anim-3 3s 1 linear alternate-reverse;
   }
+
+  @media (hover: hover) and (pointer: fine) {
+    .glitch:hover:not(.glitch-load) {
+       animation: glitch-anim 0.5s 1;
+    }
+     .glitch:hover:not(.glitch-load)::before {
+        left: 2px;
+        text-shadow: -2px 0 hsl(var(--accent));
+        animation: glitch-anim-2 0.5s 1 linear alternate-reverse;
+    }
+     .glitch:hover:not(.glitch-load)::after {
+        left: -2px;
+        text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
+        animation: glitch-anim-3 0.5s 1 linear alternate-reverse;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .glitch-mobile {
+      animation: glitch-anim 3s infinite 20s;
+    }
+
+    .glitch-mobile::before {
+      left: 2px;
+      text-shadow: -2px 0 hsl(var(--accent));
+      animation: glitch-anim-2 2s infinite 20s linear alternate-reverse;
+    }
+
+    .glitch-mobile::after {
+      left: -2px;
+      text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
+      animation: glitch-anim-3 3s infinite 20s linear alternate-reverse;
+    }
+  }
+
 
   @keyframes glitch-anim {
     0% { transform: translate(0); opacity: 1; }
