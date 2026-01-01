@@ -136,9 +136,9 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'marquee': 'marquee 30s linear infinite',
         'hard-shadow-pop': 'hard-shadow-pop 0.15s ease-out forwards',
-        'glitch-main': 'glitch-skew 1s infinite linear alternate-reverse',
-        'glitch-before': 'glitch-anim 3s infinite linear alternate-reverse',
-        'glitch-after': 'glitch-anim-2 2s infinite linear alternate-reverse'
+        'glitch-main': 'glitch-skew 1s 3 linear',
+        'glitch-before': 'glitch-anim 3s 1 linear',
+        'glitch-after': 'glitch-anim-2 2s 1.5 linear'
       },
     },
   },

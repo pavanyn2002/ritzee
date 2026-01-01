@@ -102,7 +102,7 @@
   .glitch {
     position: relative;
     color: hsl(var(--primary));
-    animation: glitch-skew 1s infinite linear alternate-reverse;
+    animation: glitch-skew 1s 3 linear;
   }
   .glitch::before,
   .glitch::after {
@@ -118,11 +118,11 @@
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
     clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 3s infinite linear alternate-reverse;
+    animation: glitch-anim 3s 1 linear;
   }
   .glitch::after {
     left: -2px;
     text-shadow: -2px 0 hsl(var(--foreground)), 2px 2px hsl(var(--accent));
-    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+    animation: glitch-anim-2 2s 1.5 linear;
   }
 }
