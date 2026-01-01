@@ -12,8 +12,11 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 export default function HeroSection() {
+  const isMobile = useIsMobile();
   const heroImages = [
     ...products.map(p => ({id: p.id, image: p.image, name: p.name, imageHint: p.imageHint})),
     {
@@ -69,7 +72,10 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
              <h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary glitch"
+              className={cn(
+                "text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary glitch",
+                isMobile && "glitch-mobile"
+              )}
               data-text="RITZEE"
             >
               RITZEE
