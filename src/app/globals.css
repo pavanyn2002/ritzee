@@ -125,8 +125,7 @@
  .glitch.glitch-load::before {
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
-    animation: glitch-anim-2 2s 1 linear alternate-reverse;
-    animation-delay: 1s;
+    animation: glitch-anim-2 3s 1 linear alternate-reverse;
   }
 
  .glitch.glitch-load::after {
