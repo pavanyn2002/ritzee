@@ -101,6 +101,8 @@
   
   .glitch {
     position: relative;
+    color: hsl(var(--primary));
+    text-shadow: 3px 3px 0px hsl(var(--accent));
   }
 
   .glitch::before,
@@ -116,20 +118,20 @@
     clip: rect(0, 0, 0, 0);
   }
 
-  .glitch.glitch-load {
-    animation: glitch-anim 3s steps(1, end) 1;
-  }
-
   .glitch.glitch-load::before {
     left: 2px;
-    text-shadow: -2px 0 hsl(var(--accent));
-    animation: glitch-anim-2 3s steps(1, end) 1;
+    text-shadow: -2px 0 red;
+    animation: glitch-anim-2 5s steps(1, end) 1;
   }
 
   .glitch.glitch-load::after {
     left: -2px;
-    text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
-    animation: glitch-anim-3 3s steps(1, end) 1;
+    text-shadow: -2px 0 blue, 2px 2px red;
+    animation: glitch-anim-3 5s steps(1, end) 1;
+  }
+
+  .glitch.glitch-load {
+    animation: glitch-anim 5s steps(1, end) 1;
   }
 }
 
