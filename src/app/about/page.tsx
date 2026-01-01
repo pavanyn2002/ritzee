@@ -22,7 +22,7 @@ export default function AboutPage() {
         <ScrollAnimation delay={200}>
           <div className="relative aspect-square">
             <Image
-              src={products[2].image}
+              src="https://storage.googleapis.com/project-spark-348b6.appspot.com/6ff18063-ce3f-42e3-8208-8e6d23456f93"
               alt="Our mission"
               fill
               className="object-cover rounded-lg hard-shadow"
