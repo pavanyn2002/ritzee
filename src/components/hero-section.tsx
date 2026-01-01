@@ -12,21 +12,9 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
 import React from 'react';
 
 export default function HeroSection() {
-  const isMobile = useIsMobile();
-  const [initialLoad, setInitialLoad] = React.useState(true);
-
-   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setInitialLoad(false);
-    }, 3000); // Duration of the initial animation
-    return () => clearTimeout(timer);
-  }, []);
-
 
   const heroImages = [
     ...products.map(p => ({id: p.id, image: p.image, name: p.name, imageHint: p.imageHint})),
@@ -83,11 +71,7 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
              <h1 
-              className={cn(
-                "text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary glitch",
-                 isMobile && 'glitch-mobile',
-                 initialLoad && 'glitch-initial'
-              )}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary"
               data-text="RITZEE"
             >
               RITZEE
