@@ -98,4 +98,50 @@
    .hard-shadow-accent:hover {
       box-shadow: 8px 8px 0px 0px hsl(var(--accent));
   }
+  
+  .glitch {
+    position: relative;
+    color: hsl(var(--primary));
+    text-shadow: 2px 2px 0px hsl(var(--accent));
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--background));
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+  }
+
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 hsl(var(--accent));
+    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+  }
+
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+  }
+
+  .animate-glitch-load {
+    animation: glitch-skew 3s 1;
+  }
+
+  .group-hover\/hero:hover .animate-glitch-hover {
+    animation: glitch-skew 0.5s 1;
+  }
+
+  @media (max-width: 767px) {
+    .animate-glitch-mobile-loop {
+      animation: glitch-skew 20s infinite;
+    }
+  }
+
 }

@@ -12,9 +12,21 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 
 export default function HeroSection() {
+    const [runInitialAnimation, setRunInitialAnimation] = useState(true);
+    const isMobile = useIsMobile();
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setRunInitialAnimation(false);
+      }, 3000); // Duration of the animation
+      return () => clearTimeout(timer);
+    }, []);
 
   const heroImages = [
     ...products.map(p => ({id: p.id, image: p.image, name: p.name, imageHint: p.imageHint})),
@@ -33,7 +45,7 @@ export default function HeroSection() {
   ]
 
   return (
-    <section className="relative w-full h-[calc(100vh-4rem)] overflow-hidden flex items-center justify-center">
+    <section className="relative w-full h-[calc(100vh-4rem)] overflow-hidden flex items-center justify-center group/hero">
       <div className="absolute inset-0 z-0">
         <Carousel
           className="w-full h-full"
@@ -71,7 +83,14 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
              <h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary"
+              className={cn(
+                'text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter glitch',
+                {
+                  'animate-glitch-load': runInitialAnimation,
+                  'animate-glitch-hover': !runInitialAnimation && !isMobile,
+                  'animate-glitch-mobile-loop': !runInitialAnimation && isMobile,
+                }
+              )}
               data-text="RITZEE"
             >
               RITZEE
