@@ -126,6 +126,7 @@
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
     animation: glitch-anim-2 2s 1 linear alternate-reverse;
+    animation-delay: 1s;
   }
 
  .glitch.glitch-load::after {
@@ -133,23 +134,6 @@
     text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
     animation: glitch-anim-3 3s 1 linear alternate-reverse;
   }
-
-  @media (hover: hover) and (pointer: fine) {
-    .glitch:hover:not(.glitch-load) {
-       animation: glitch-anim 0.5s 1;
-    }
-     .glitch:hover:not(.glitch-load)::before {
-        left: 2px;
-        text-shadow: -2px 0 hsl(var(--accent));
-        animation: glitch-anim-2 0.5s 1 linear alternate-reverse;
-    }
-     .glitch:hover:not(.glitch-load)::after {
-        left: -2px;
-        text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
-        animation: glitch-anim-3 0.5s 1 linear alternate-reverse;
-    }
-  }
-
 
   @keyframes glitch-anim {
     0% { transform: translate(0); opacity: 1; }
