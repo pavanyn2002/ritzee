@@ -36,10 +36,10 @@ export default function AboutPage() {
          <ScrollAnimation delay={200} className="md:order-2">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold font-headline tracking-tighter">
-              The Future of Fashion
+              360° Radical Transparency
             </h2>
             <p className="text-lg text-foreground/80">
-             We are pioneers in the digital fashion space. By leveraging 3D modeling, we create unique pieces that blur the lines between the virtual and the real. This allows for unparalleled creativity and a new way to experience clothing. Each piece is a statement, a conversation starter, and a piece of wearable art.
+              We don't believe in "good angles" or hidden seams. What you see is exactly what you get. We’ve ditched static, flat imagery for immersive 360° views on every product. Spin it, zoom in, and inspect the details from every perspective. We give you the full picture so you can cop with 100% confidence. No surprises, just premium fits.
             </p>
           </div>
         </ScrollAnimation>
