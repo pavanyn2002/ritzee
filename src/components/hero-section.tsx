@@ -95,14 +95,6 @@ export default function HeroSection() {
                   Explore Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="font-bold text-lg px-8 py-6 rounded-none border-2"
-              >
-                <Link href="#">Learn More</Link>
-              </Button>
             </div>
           </ScrollAnimation>
         </div>
