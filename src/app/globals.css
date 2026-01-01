@@ -104,10 +104,6 @@
     color: hsl(var(--primary));
     text-shadow: 2px 2px 0px hsl(var(--accent));
   }
-  
-  .glitch.glitch-load {
-    animation: glitch-anim 3s 1;
-  }
 
   .glitch::before,
   .glitch::after {
@@ -122,13 +118,17 @@
     clip: rect(0, 900px, 0, 0);
   }
 
- .glitch.glitch-load::before {
+  .glitch.glitch-load {
+    animation: glitch-anim 3s 1;
+  }
+
+  .glitch.glitch-load::before {
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
     animation: glitch-anim-2 3s 1 linear alternate-reverse;
   }
 
- .glitch.glitch-load::after {
+  .glitch.glitch-load::after {
     left: -2px;
     text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
     animation: glitch-anim-3 3s 1 linear alternate-reverse;
