@@ -21,16 +21,18 @@ import SearchDialog from './search-dialog';
 
 const categories = [...new Set(products.map(p => p.category))];
 
+const linkStyles = "text-base font-medium text-foreground/80 hover:text-primary transition-colors relative group after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-0 after:bg-[hsl(var(--accent))] hover:after:w-full after:transition-all after:duration-300";
+
 const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => (
   <nav className={className}>
-    <Link href="/" onClick={onLinkClick} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Home</Link>
+    <Link href="/" onClick={onLinkClick} className={linkStyles}>Home</Link>
 
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0 hover:text-primary">Shop</NavigationMenuTrigger>
+          <NavigationMenuTrigger className={cn(linkStyles, "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0")}>Shop</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="flex flex-wrap justify-center w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px]">
               {categories.map((category) => (
                 <ListItem
                   key={category}
@@ -47,9 +49,10 @@ const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?
       </NavigationMenuList>
     </NavigationMenu>
 
-    <Link href="/about" onClick={onLinkClick} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">About</Link>
-    <Link href="/blog" onClick={onLinkClick} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">Blog</Link>
-    <Link href="/faq" onClick={onLinkClick} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">FAQ</Link>
+    <Link href="/bestsellers" onClick={onLinkClick} className={linkStyles}>Bestsellers</Link>
+    <Link href="/blog" onClick={onLinkClick} className={linkStyles}>Blog</Link>
+    <Link href="/about" onClick={onLinkClick} className={linkStyles}>About</Link>
+    <Link href="/faq" onClick={onLinkClick} className={linkStyles}>FAQ</Link>
   </nav>
 );
 
@@ -118,7 +121,7 @@ export default function Header() {
             <div className="md:hidden">
               <Logo />
             </div>
-            <NavLinks className="hidden md:flex items-center space-x-8 text-sm" />
+            <NavLinks className="hidden md:flex items-center space-x-10 text-base" />
           </div>
 
           <div className="flex items-center gap-2">

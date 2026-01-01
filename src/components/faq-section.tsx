@@ -24,7 +24,7 @@ const faqs = [
     },
     {
         question: 'Do you ship internationally?',
-        answer: 'Yes! We ship worldwide. International shipping rates and delivery times vary by location.'
+        answer: 'No we are currently only shipping domestically across India'
     },
 ];
 

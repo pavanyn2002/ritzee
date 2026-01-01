@@ -91,7 +91,7 @@ export default function ContactSection() {
                             />
                             <Button
                                 type="submit"
-                                className="w-full font-semibold gap-2"
+                                className="w-full font-semibold gap-2 hover:bg-[hsl(var(--accent))] transition-colors"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Sending...' : 'Send Message'}

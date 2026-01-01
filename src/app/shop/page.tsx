@@ -67,63 +67,116 @@ export default function ShopPage() {
 
   // Default view: show all categories with carousels
   return (
-    <section className="py-16 sm:py-24">
+    <section className="py-8 sm:py-12">
       <div className="container px-4 md:px-6">
         <ScrollAnimation>
-          <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl mb-12 text-center">
+          <h1 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8 text-center">
             {pageTitle}
           </h1>
         </ScrollAnimation>
 
-        <div className="space-y-16">
-          {filteredCategories.map((category) => {
+        <div className="space-y-10">
+          {filteredCategories.map((category, index) => {
             const categoryProducts = products.filter(
               (p) => p.category === category
             );
             if (categoryProducts.length === 0) return null;
 
+            // Middle Category (Index 1) - Rotating Carousel with 5 items (smaller cards)
+            if (index === 1) {
+              return (
+                <div key={category}>
+                  <ScrollAnimation>
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="text-2xl font-headline font-bold tracking-tighter">
+                        {category}
+                      </h2>
+                      <Button asChild variant="outline" size="sm" className="hidden sm:flex h-8 text-xs">
+                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2 h-3 w-3" /></Link>
+                      </Button>
+                    </div>
+                  </ScrollAnimation>
+                  <Carousel
+                    opts={{
+                      align: 'start',
+                      loop: true,
+                    }}
+                    plugins={[
+                      Autoplay({
+                        delay: 3500,
+                        stopOnInteraction: true,
+                      }),
+                    ]}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-3">
+                      {categoryProducts.map((product) => (
+                        <CarouselItem
+                          key={product.id}
+                          className="pl-3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                        >
+                          <div className="p-1 h-full">
+                            <ProductCard product={product} />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="hidden lg:flex left-2 h-8 w-8" />
+                    <CarouselNext className="hidden lg:flex right-2 h-8 w-8" />
+                  </Carousel>
+                  <div className="mt-4 text-center sm:hidden">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
+                    </Button>
+                  </div>
+                </div>
+              );
+            }
+
+            // Top and Bottom Categories (Index 0 & 2) - Carousel with lighter layout
             return (
               <div key={category}>
                 <ScrollAnimation>
-                  <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-3xl font-headline font-bold tracking-tighter">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-headline font-bold tracking-tighter">
                       {category}
                     </h2>
-                    <Button asChild variant="outline" className="hidden sm:flex">
-                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2" /></Link>
+                    <Button asChild variant="outline" size="sm" className="hidden sm:flex h-8 text-xs">
+                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2 h-3 w-3" /></Link>
                     </Button>
                   </div>
                 </ScrollAnimation>
                 <Carousel
                   opts={{
-                    align: 'start',
-                    loop: categoryProducts.length > 4,
+                    align: 'center',
+                    loop: true,
                   }}
                   plugins={[
                     Autoplay({
-                      delay: 5000,
+                      delay: 4000,
                       stopOnInteraction: true,
                     }),
                   ]}
                   className="w-full"
                 >
-                  <CarouselContent>
+                  <CarouselContent className="-ml-3">
                     {categoryProducts.map((product) => (
                       <CarouselItem
                         key={product.id}
-                        className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                        className="pl-3 sm:basis-1/2 md:basis-[30%] lg:basis-[22%]"
                       >
-                        <div className="p-1">
+                        {/* basis-[22%] means even smaller items, more visible at once */}
+                        <div className="p-1 h-full">
                           <ProductCard product={product} />
                         </div>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="hidden lg:flex" />
-                  <CarouselNext className="hidden lg:flex" />
+                  <CarouselPrevious className="hidden lg:flex left-2 h-8 w-8" />
+                  <CarouselNext className="hidden lg:flex right-2 h-8 w-8" />
                 </Carousel>
                 <div className="mt-4 text-center sm:hidden">
-                  <Button asChild variant="outline">
+                  <Button asChild variant="outline" size="sm">
                     <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
                   </Button>
                 </div>

@@ -9,7 +9,7 @@ export default function AboutPage() {
         <ScrollAnimation>
           <div className="space-y-4">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tighter">
-              WE ARE <span className="text-primary">RITZEE</span>
+              WE ARE <span className="glitch" data-text="RITZEE">RITZEE</span>
             </h1>
             <p className="text-lg text-foreground/80">
               Founded in 2026, Ritzee Wear was born to break the mold. We saw a fashion landscape that was either too safe or too inaccessible, so we built a bridge to the bold. We offer limited-edition, high-concept apparel designed to empower your most authentic, audacious self.

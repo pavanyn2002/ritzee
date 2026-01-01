@@ -14,12 +14,12 @@ export default function Home() {
     <>
       <HeroSection />
       <Marquee>
-        <span className="text-3xl md:text-4xl font-headline mx-4">360° View</span>
-        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">*</span>
+        <span className="text-3xl md:text-4xl font-headline mx-4">360° View for bestsellers</span>
+        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">⚡</span>
         <span className="text-3xl md:text-4xl font-headline mx-4">Limited Edition</span>
-        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">*</span>
+        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">⚡</span>
         <span className="text-3xl md:text-4xl font-headline mx-4">Future of Fashion</span>
-        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">*</span>
+        <span className="text-3xl md:text-4xl font-headline mx-4 text-primary">⚡</span>
       </Marquee>
 
       <section className="py-12 md:py-20" id="latest-drops">
