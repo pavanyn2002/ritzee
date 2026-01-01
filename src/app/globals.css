@@ -98,4 +98,29 @@
    .hard-shadow-accent:hover {
       box-shadow: 8px 8px 0px 0px hsl(var(--accent));
   }
+  
+  .glitch {
+    position: relative;
+    animation: glitch-skew 1s infinite linear alternate-reverse;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 hsl(var(--primary));
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 hsl(var(--accent)), 2px 2px hsl(var(--accent));
+    animation: glitch-anim-2 1s infinite linear alternate-reverse;
+  }
 }

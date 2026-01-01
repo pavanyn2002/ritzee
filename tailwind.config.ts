@@ -100,12 +100,42 @@ export default {
             'box-shadow': '8px 8px 0px 0px hsl(var(--primary))'
           }
         },
+        'glitch-anim': {
+          '0%': { clip: 'rect(32px, 9999px, 94px, 0)' },
+          '25%': { clip: 'rect(42px, 9999px, 100px, 0)' },
+          '50%': { clip: 'rect(22px, 9999px, 66px, 0)' },
+          '75%': { clip: 'rect(35px, 9999px, 80px, 0)' },
+          '100%': { clip: 'rect(50px, 9999px, 75px, 0)' },
+        },
+        'glitch-anim-2': {
+          '0%': { clip: 'rect(85px, 9999px, 90px, 0)' },
+          '25%': { clip: 'rect(35px, 9999px, 50px, 0)' },
+          '50%': { clip: 'rect(65px, 9999px, 70px, 0)' },
+          '75%': { clip: 'rect(10px, 9999px, 45px, 0)' },
+          '100%': { clip: 'rect(75px, 999-px, 85px, 0)' },
+        },
+        'glitch-skew': {
+          '0%': { transform: 'skew(0deg)' },
+          '10%': { transform: 'skew(1deg)' },
+          '20%': { transform: 'skew(-1deg)' },
+          '30%': { transform: 'skew(2deg)' },
+          '40%': { transform: 'skew(0deg)' },
+          '50%': { transform: 'skew(-2deg)' },
+          '60%': { transform: 'skew(0deg)' },
+          '70%': { transform: 'skew(1.5deg)' },
+          '80%': { transform: 'skew(-1.5deg)' },
+          '90%': { transform: 'skew(0deg)' },
+          '100%': { transform: 'skew(0deg)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'marquee': 'marquee 30s linear infinite',
         'hard-shadow-pop': 'hard-shadow-pop 0.15s ease-out forwards',
+        'glitch-main': 'glitch-skew 1s infinite linear alternate-reverse',
+        'glitch-before': 'glitch-anim 5s infinite linear alternate-reverse',
+        'glitch-after': 'glitch-anim-2 1s infinite linear alternate-reverse'
       },
     },
   },

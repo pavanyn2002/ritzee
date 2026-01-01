@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -70,7 +69,10 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
             <div className="relative">
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-foreground">
+               <h1 
+                className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-foreground glitch"
+                data-text="RITZEE"
+              >
                 RITZEE
               </h1>
               <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-2xl opacity-70">
