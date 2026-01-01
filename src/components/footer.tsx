@@ -26,6 +26,8 @@ export default function Footer() {
              <div className="grid gap-1">
                 <h3 className="font-semibold">About</h3>
                 <Link href="/about" className="text-foreground/60 hover:text-primary">Our Story</Link>
+                <Link href="#" className="text-foreground/60 hover:text-primary">Careers</Link>
+                <Link href="#" className="text-foreground/60 hover:text-primary">Press</Link>
             </div>
              <div className="grid gap-1">
                 <h3 className="font-semibold">Support</h3>
