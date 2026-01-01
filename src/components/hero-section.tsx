@@ -23,7 +23,7 @@ export default function HeroSection() {
    React.useEffect(() => {
     const timer = setTimeout(() => {
       setInitialLoad(false);
-    }, 3000);
+    }, 3000); // Duration of the initial animation
     return () => clearTimeout(timer);
   }, []);
 
