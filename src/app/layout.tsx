@@ -30,10 +30,12 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-background text-foreground min-h-screen flex flex-col">
         <CartProvider>
-          <div className="bg-muted text-muted-foreground text-sm text-center py-2 px-4">
-            Free shipping on all orders over $999
+          <div className="sticky top-0 z-50">
+            <div className="bg-muted text-muted-foreground text-sm text-center py-2 px-4">
+              Free shipping on all orders over $999
+            </div>
+            <Header />
           </div>
-          <Header />
           <Cart />
           <main className="flex-grow">{children}</main>
           <Footer />
