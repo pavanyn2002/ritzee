@@ -68,17 +68,12 @@ export default function HeroSection() {
       <div className="container px-4 md:px-6 z-10 text-center">
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
-            <div className="relative">
-               <h1 
-                className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-foreground glitch"
-                data-text="RITZEE"
-              >
-                RITZEE
-              </h1>
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-2xl opacity-70">
-                RITZEE
-              </h1>
-            </div>
+             <h1 
+              className="text-6xl md:text-8xl lg:text-9xl font-bold font-headline tracking-tighter text-primary glitch"
+              data-text="RITZEE"
+            >
+              RITZEE
+            </h1>
           </ScrollAnimation>
           <ScrollAnimation delay={100}>
             <p className="max-w-[600px] text-foreground/80 md:text-xl">
