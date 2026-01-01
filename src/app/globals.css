@@ -119,30 +119,36 @@
   .glitch:before {
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
-    animation: glitch-effect-1 3s infinite linear alternate-reverse;
   }
 
   .glitch:after {
     left: -2px;
     text-shadow: -2px 0 hsl(180 100% 50% / 0.7), 2px 2px hsl(var(--accent));
-    animation: glitch-effect-2 2s infinite linear alternate-reverse;
-  }
-
-  .glitch:hover:before {
-     animation: glitch-effect-1 0.5s linear alternate-reverse;
   }
   
-  .glitch:hover:after {
-    animation: glitch-effect-2 0.5s linear alternate-reverse;
+  /* Initial Load Animation */
+  .glitch.glitch-initial:before {
+    animation: glitch-effect-1 3s linear;
+  }
+  .glitch.glitch-initial:after {
+    animation: glitch-effect-2 2s linear;
   }
 
+  /* Hover Animation (Desktop) */
+  .glitch:hover:before {
+     animation: glitch-effect-1 0.5s linear;
+  }
+  .glitch:hover:after {
+    animation: glitch-effect-2 0.5s linear;
+  }
 
+  /* Mobile Animation Loop */
   @media (max-width: 768px) {
     .glitch.glitch-mobile:before {
-        animation: glitch-effect-1 20s infinite linear alternate-reverse;
+        animation: glitch-effect-1 3s 20s infinite linear alternate-reverse;
     }
     .glitch.glitch-mobile:after {
-        animation: glitch-effect-2 20s infinite linear alternate-reverse;
+        animation: glitch-effect-2 2s 20s infinite linear alternate-reverse;
     }
   }
 }
