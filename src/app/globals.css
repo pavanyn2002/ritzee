@@ -150,24 +150,6 @@
     }
   }
 
-  @media (max-width: 767px) {
-    .glitch-mobile {
-      animation: glitch-anim 3s infinite 20s;
-    }
-
-    .glitch-mobile::before {
-      left: 2px;
-      text-shadow: -2px 0 hsl(var(--accent));
-      animation: glitch-anim-2 2s infinite 20s linear alternate-reverse;
-    }
-
-    .glitch-mobile::after {
-      left: -2px;
-      text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
-      animation: glitch-anim-3 3s infinite 20s linear alternate-reverse;
-    }
-  }
-
 
   @keyframes glitch-anim {
     0% { transform: translate(0); opacity: 1; }

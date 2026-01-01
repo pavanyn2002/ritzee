@@ -14,11 +14,9 @@ import {
 import Autoplay from 'embla-carousel-autoplay';
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 
 export default function HeroSection() {
-    const isMobile = useIsMobile();
     const [runLoadAnimation, setRunLoadAnimation] = useState(true);
     
     useEffect(() => {
@@ -85,8 +83,7 @@ export default function HeroSection() {
              <h1 
               className={cn(
                 'text-6xl md:text-8xl lg:text-9xl font-bold font-headline glitch',
-                {'glitch-load': runLoadAnimation},
-                {'glitch-mobile': isMobile}
+                {'glitch-load': runLoadAnimation}
               )}
               data-text="RITZEE"
             >
