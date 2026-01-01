@@ -89,7 +89,7 @@
     transition: box-shadow 0.15s ease-in-out;
   }
   .hard-shadow:hover {
-      box-shadow: 8px 8px 0px 0px hsl(var(--primary));
+      box-shadow: 8px 8px 0px 0px hsl(var(--accent));
   }
   .hard-shadow-accent {
     box-shadow: 6px 6px 0px 0px hsl(var(--accent));
