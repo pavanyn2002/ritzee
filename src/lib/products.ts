@@ -7,6 +7,7 @@ export type Product = {
   image: string;
   imageHint: string;
   modelUrl: string;
+  category: 'Oversized T-Shirts' | 'Hoodies' | 'Baggy Jeans';
 };
 
 export const products: Product[] = [
@@ -19,6 +20,7 @@ export const products: Product[] = [
     image: '/products/tshirt1.png',
     imageHint: 'tshirt black',
     modelUrl: '/models/tshirt1.glb',
+    category: 'Oversized T-Shirts',
   },
   {
     id: '2',
@@ -29,6 +31,7 @@ export const products: Product[] = [
     image: '/products/hoodie1.png',
     imageHint: 'hoodie gray',
     modelUrl: '/models/tshirt2.glb',
+    category: 'Hoodies',
   },
   {
     id: '3',
@@ -39,5 +42,17 @@ export const products: Product[] = [
     image: '/products/shirt1.png',
     imageHint: 'colorful shirt',
     modelUrl: '/models/tshirt3.glb',
+    category: 'Oversized T-Shirts',
+  },
+  {
+    id: '4',
+    slug: 'cyber-wash-baggy-jeans',
+    name: 'Cyber-Wash Baggy Jeans',
+    description: 'Acid-washed baggy jeans with a futuristic fit. Features utility pockets and a relaxed silhouette for maximum comfort.',
+    price: 150.0,
+    image: '/products/jeans1.png',
+    imageHint: 'baggy jeans',
+    modelUrl: '/models/jeans1.glb',
+    category: 'Baggy Jeans',
   },
 ];
