@@ -105,6 +105,10 @@
     text-shadow: 2px 2px 0px hsl(var(--accent));
   }
 
+  .glitch-load {
+    animation: glitch-anim 3s 1;
+  }
+
   .glitch::before,
   .glitch::after {
     content: attr(data-text);
@@ -118,30 +122,64 @@
     clip: rect(0, 900px, 0, 0);
   }
 
-  .glitch::before {
+  .glitch-load::before {
     left: 2px;
     text-shadow: -2px 0 hsl(var(--accent));
-    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+    animation: glitch-anim-2 2s 1 linear alternate-reverse;
   }
 
-  .glitch::after {
+  .glitch-load::after {
     left: -2px;
     text-shadow: -2px 0 hsla(180, 100%, 50%, 0.7), 2px 2px hsl(var(--accent));
-    animation: glitch-anim 3s infinite linear alternate-reverse;
+    animation: glitch-anim-3 3s 1 linear alternate-reverse;
   }
 
-  .animate-glitch-load {
-    animation: glitch-skew 3s 1;
+  @keyframes glitch-anim {
+    0% { transform: translate(0); opacity: 1; }
+    15% { transform: translate(-2px, 2px) skewX(20deg); opacity: 0.8; }
+    30% { transform: translate(2px, -2px); opacity: 1; }
+    45% { transform: translate(0) scale(1.1); opacity: 0.7; }
+    60% { transform: translate(0) skewX(-10deg); opacity: 1; }
+    75% { transform: translate(1px, -1px) scale(0.9); opacity: 0.8; }
+    100% { transform: translate(0); opacity: 1; }
   }
 
-  .group-hover\/hero:hover .animate-glitch-hover {
-    animation: glitch-skew 0.5s 1;
+  @keyframes glitch-anim-2 {
+    0% { clip: rect(85px, 9999px, 90px, 0); transform: skew(-0.75deg); }
+    10% { clip: rect(25px, 9999px, 100px, 0); }
+    20% { clip: rect(50px, 9999px, 75px, 0); }
+    30% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.5deg); }
+    40% { clip: rect(90px, 9999px, 120px, 0); }
+    50% { clip: rect(65px, 9999px, 70px, 0); transform: skew(0.75deg); }
+    60% { clip: rect(40px, 9999px, 60px, 0); }
+    70% { clip: rect(10px, 9999px, 45px, 0); transform: skew(0.5deg); }
+    80% { clip: rect(100px, 9999px, 130px, 0); }
+    90% { clip: rect(20px, 9999px, 50px, 0); }
+    100% { clip: rect(75px, 9999px, 85px, 0); transform: skew(-0.75deg); }
   }
 
-  @media (max-width: 767px) {
-    .animate-glitch-mobile-loop {
-      animation: glitch-skew 20s infinite;
-    }
+  @keyframes glitch-anim-3 {
+    0% { clip: rect(42px, 9999px, 47px, 0); transform: skew(0.5deg); }
+    5% { clip: rect(7px, 9999px, 29px, 0); }
+    10% { clip: rect(38px, 9999px, 57px, 0); transform: skew(0.8deg); }
+    15% { clip: rect(22px, 9999px, 79px, 0); }
+    20% { clip: rect(69px, 9999px, 86px, 0); transform: skew(0.2deg); }
+    25% { clip: rect(54px, 9999px, 64px, 0); }
+    30% { clip: rect(18px, 9999px, 40px, 0); transform: skew(0.1deg); }
+    35% { clip: rect(93px, 9999px, 99px, 0); }
+    40% { clip: rect(44px, 9999px, 62px, 0); transform: skew(0.9deg); }
+    45% { clip: rect(8px, 9999px, 26px, 0); }
+    50% { clip: rect(83px, 9999px, 93px, 0); transform: skew(0.4deg); }
+    55% { clip: rect(3px, 9999px, 20px, 0); }
+    60% { clip: rect(25px, 9999px, 45px, 0); transform: skew(0.7deg); }
+    65% { clip: rect(78px, 9999px, 88px, 0); }
+    70% { clip: rect(55px, 9999px, 68px, 0); transform: skew(0.3deg); }
+    75% { clip: rect(12px, 9999px, 32px, 0); }
+    80% { clip: rect(88px, 9999px, 98px, 0); transform: skew(0.6deg); }
+    85% { clip: rect(33px, 9999px, 53px, 0); }
+    90% { clip: rect(71px, 9999px, 81px, 0); transform: skew(0.2deg); }
+    95% { clip: rect(29px, 9999px, 49px, 0); }
+    100% { clip: rect(5px, 9999px, 15px, 0); transform: skew(0.9deg); }
   }
 
 }
