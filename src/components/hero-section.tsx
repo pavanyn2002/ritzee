@@ -26,7 +26,7 @@ export default function HeroSection() {
   }, []);
 
   const heroImages = [
-    ...products.map(p => ({id: p.id, image: p.image, name: p.name, imageHint: p.imageHint})),
+    ...products.map(p => ({ id: p.id, image: p.image, name: p.name, imageHint: p.imageHint })),
     {
       id: 'extra-1',
       image: '/products/lifestyle1.png',
@@ -74,12 +74,12 @@ export default function HeroSection() {
             ))}
           </CarouselContent>
         </Carousel>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
       </div>
       <div className="container px-4 md:px-6 z-10 text-center">
         <div className="flex flex-col items-center space-y-6">
           <ScrollAnimation>
-             <h1 
+            <h1
               className={cn(
                 'text-6xl md:text-8xl lg:text-9xl font-bold font-headline glitch',
                 { 'glitch-load': runLoadAnimation }
@@ -90,7 +90,7 @@ export default function HeroSection() {
             </h1>
           </ScrollAnimation>
           <ScrollAnimation delay={100}>
-            <p className="max-w-[600px] text-foreground/80 md:text-xl">
+            <p className="max-w-[600px] text-foreground/80 md:text-xl text-shimmer">
               Unleash Your Alter Ego. Explore limited edition drops and
               experience fashion in 360°.
             </p>

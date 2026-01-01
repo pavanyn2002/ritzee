@@ -20,20 +20,19 @@ export default function AboutPage() {
           </div>
         </ScrollAnimation>
         <ScrollAnimation delay={200}>
-          <div className="relative aspect-square">
+          <div className="relative aspect-video md:aspect-square overflow-hidden rounded-lg">
             <Image
-              src="https://storage.googleapis.com/project-spark-348b6.appspot.com/6ff18063-ce3f-42e3-8208-8e6d23456f93"
-              alt="Our mission"
+              src="/mission-hero.png"
+              alt="Ritzee Wear - Future of Fashion"
               fill
-              className="object-cover rounded-lg hard-shadow"
-              data-ai-hint="fashion lifestyle"
+              className="object-cover hard-shadow"
             />
           </div>
         </ScrollAnimation>
       </div>
 
-       <div className="grid md:grid-cols-2 gap-12 items-center mt-24">
-         <ScrollAnimation delay={200} className="md:order-2">
+      <div className="grid md:grid-cols-2 gap-12 items-center mt-24">
+        <ScrollAnimation delay={200} className="md:order-2">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold font-headline tracking-tighter">
               360° Radical Transparency
@@ -44,13 +43,12 @@ export default function AboutPage() {
           </div>
         </ScrollAnimation>
         <ScrollAnimation className="relative aspect-square md:order-1">
-            <Image
-              src="/products/lifestyle1.png"
-              alt="Digital fashion"
-              fill
-              className="object-cover rounded-lg hard-shadow-accent"
-              data-ai-hint="futuristic fashion"
-            />
+          <Image
+            src="/aboutus.png"
+            alt="About Ritzee Wear"
+            fill
+            className="object-cover rounded-lg hard-shadow-accent"
+          />
         </ScrollAnimation>
       </div>
     </div>

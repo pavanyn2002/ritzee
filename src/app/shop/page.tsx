@@ -16,7 +16,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
@@ -30,6 +30,42 @@ export default function ShopPage() {
 
   const pageTitle = categoryParam ? `${categoryParam}` : 'Our Collection';
 
+  // When viewing a specific category, show all products in a grid
+  if (categoryParam) {
+    const categoryProducts = products.filter((p) => p.category === categoryParam);
+
+    return (
+      <section className="py-16 sm:py-24 min-h-[calc(100vh-12rem)]">
+        <div className="container px-4 md:px-6">
+          <ScrollAnimation>
+            <div className="flex items-center gap-4 mb-8">
+              <Button asChild variant="ghost" size="icon">
+                <Link href="/shop">
+                  <ArrowLeft className="h-5 w-5" />
+                </Link>
+              </Button>
+              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl">
+                {pageTitle}
+              </h1>
+            </div>
+            <p className="text-muted-foreground mb-12">
+              Showing {categoryProducts.length} products
+            </p>
+          </ScrollAnimation>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {categoryProducts.map((product, index) => (
+              <ScrollAnimation key={product.id} delay={index * 50}>
+                <ProductCard product={product} />
+              </ScrollAnimation>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Default view: show all categories with carousels
   return (
     <section className="py-16 sm:py-24">
       <div className="container px-4 md:px-6">
@@ -48,18 +84,16 @@ export default function ShopPage() {
 
             return (
               <div key={category}>
-                {!categoryParam && (
-                  <ScrollAnimation>
-                    <div className="flex justify-between items-center mb-8">
-                      <h2 className="text-3xl font-headline font-bold tracking-tighter">
-                        {category}
-                      </h2>
-                      <Button asChild variant="outline" className="hidden sm:flex">
-                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2" /></Link>
-                      </Button>
-                    </div>
-                  </ScrollAnimation>
-                )}
+                <ScrollAnimation>
+                  <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-3xl font-headline font-bold tracking-tighter">
+                      {category}
+                    </h2>
+                    <Button asChild variant="outline" className="hidden sm:flex">
+                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2" /></Link>
+                    </Button>
+                  </div>
+                </ScrollAnimation>
                 <Carousel
                   opts={{
                     align: 'start',
@@ -88,13 +122,11 @@ export default function ShopPage() {
                   <CarouselPrevious className="hidden lg:flex" />
                   <CarouselNext className="hidden lg:flex" />
                 </Carousel>
-                {!categoryParam && (
-                   <div className="mt-4 text-center sm:hidden">
-                     <Button asChild variant="outline">
-                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
-                      </Button>
-                   </div>
-                )}
+                <div className="mt-4 text-center sm:hidden">
+                  <Button asChild variant="outline">
+                    <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
+                  </Button>
+                </div>
               </div>
             );
           })}
