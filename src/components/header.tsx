@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -11,8 +10,8 @@ import React from 'react';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/#latest-drops', label: 'Shop' },
-  { href: '#', label: 'About' },
+  { href: '/shop', label: 'Shop' },
+  { href: '/about', label: 'About' },
 ];
 
 const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => (

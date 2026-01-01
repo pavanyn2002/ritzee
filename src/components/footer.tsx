@@ -19,13 +19,13 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
             <div className="grid gap-1">
                 <h3 className="font-semibold">Shop</h3>
-                <Link href="#" className="text-foreground/60 hover:text-primary">New Arrivals</Link>
-                <Link href="#" className="text-foreground/60 hover:text-primary">Collections</Link>
-                <Link href="#" className="text-foreground/60 hover:text-primary">Sale</Link>
+                <Link href="/shop" className="text-foreground/60 hover:text-primary">New Arrivals</Link>
+                <Link href="/shop" className="text-foreground/60 hover:text-primary">Collections</Link>
+                <Link href="/shop" className="text-foreground/60 hover:text-primary">Sale</Link>
             </div>
              <div className="grid gap-1">
                 <h3 className="font-semibold">About</h3>
-                <Link href="#" className="text-foreground/60 hover:text-primary">Our Story</Link>
+                <Link href="/about" className="text-foreground/60 hover:text-primary">Our Story</Link>
                 <Link href="#" className="text-foreground/60 hover:text-primary">Careers</Link>
                 <Link href="#" className="text-foreground/60 hover:text-primary">Press</Link>
             </div>

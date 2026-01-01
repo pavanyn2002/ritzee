@@ -3,6 +3,9 @@ import ProductCard from '@/components/product-card';
 import { products } from '@/lib/products';
 import Marquee from '@/components/marquee';
 import { ScrollAnimation } from '@/components/scroll-animation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -24,12 +27,17 @@ export default function Home() {
             </h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
+            {products.slice(0, 3).map((product, index) => (
               <ScrollAnimation key={product.id} delay={index * 100}>
                 <ProductCard product={product} />
               </ScrollAnimation>
             ))}
           </div>
+           <ScrollAnimation delay={300} className="mt-12 text-center">
+            <Button asChild size="lg" variant="outline" className="font-bold text-lg h-14 rounded-none border-2">
+              <Link href="/shop">View All Products <ArrowRight className="ml-2" /></Link>
+            </Button>
+          </ScrollAnimation>
         </div>
       </section>
     </>
