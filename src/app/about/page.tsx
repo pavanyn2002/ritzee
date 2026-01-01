@@ -12,10 +12,10 @@ export default function AboutPage() {
               WE ARE <span className="text-primary">RITZEE</span>
             </h1>
             <p className="text-lg text-foreground/80">
-              Founded in 2024, Ritzee Wear was born from a desire to break the mold. We saw a world of fashion that was either too safe or too inaccessible. We're here to bridge that gap, offering limited-edition, high-concept apparel that empowers you to express your most authentic, audacious self.
+              Founded in 2026, Ritzee Wear was born to break the mold. We saw a fashion landscape that was either too safe or too inaccessible, so we built a bridge to the bold. We offer limited-edition, high-concept apparel designed to empower your most authentic, audacious self.
             </p>
             <p className="text-lg text-foreground/80">
-              Our philosophy is simple: fashion is a playground. It's a way to explore different facets of your identity. With our 3D-rendered designs and focus on quality, we provide the tools for you to play, experiment, and redefine your reality.
+              Our philosophy is simple: fashion is a playground. By combining 3D-rendered innovation with premium craftsmanship, we deliver high-quality streetwear that defines the Gen Z aesthetic.
             </p>
           </div>
         </ScrollAnimation>
