@@ -130,20 +130,26 @@
     animation-iteration-count: 1;
   }
 
-  .glitch:before,
-  .glitch:hover:before {
+  .glitch:before {
     color: hsl(var(--primary));
     text-shadow: -2px 0 hsl(290 72% 50% / 0.8), 2px 2px hsl(180 100% 50% / 0.7);
     animation-name: glitch-effect;
     animation-direction: alternate-reverse;
   }
 
-  .glitch:after,
-  .glitch:hover:after {
+  .glitch:hover:before {
+    animation-name: glitch-effect;
+  }
+
+  .glitch:after {
     color: hsl(var(--primary));
     text-shadow: 2px 0 hsl(290 72% 50% / 0.8), -2px -2px hsl(0 100% 50% / 0.7);
     animation-name: glitch-effect;
     animation-direction: alternate;
+  }
+
+  .glitch:hover:after {
+    animation-name: glitch-effect;
   }
 
   @media (max-width: 768px) {
