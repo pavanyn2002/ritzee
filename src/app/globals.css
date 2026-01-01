@@ -116,13 +116,21 @@
     overflow: hidden;
   }
 
-  .glitch:hover:before,
+  .glitch:before,
+  .glitch:hover:before {
+    animation-duration: 3s;
+    animation-timing-function: cubic-bezier(.25, .46, .45, .94);
+    animation-iteration-count: 1;
+  }
+
+  .glitch:after,
   .glitch:hover:after {
     animation-duration: 3s;
     animation-timing-function: cubic-bezier(.25, .46, .45, .94);
     animation-iteration-count: 1;
   }
 
+  .glitch:before,
   .glitch:hover:before {
     color: hsl(var(--primary));
     text-shadow: -2px 0 hsl(290 72% 50% / 0.8), 2px 2px hsl(180 100% 50% / 0.7);
@@ -130,6 +138,7 @@
     animation-direction: alternate-reverse;
   }
 
+  .glitch:after,
   .glitch:hover:after {
     color: hsl(var(--primary));
     text-shadow: 2px 0 hsl(290 72% 50% / 0.8), -2px -2px hsl(0 100% 50% / 0.7);
