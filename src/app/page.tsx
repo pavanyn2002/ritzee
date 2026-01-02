@@ -16,34 +16,29 @@ import LatestDropsCarousel from '@/components/latest-drops-carousel';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  // Fetch 4 Latest Products (most recently added to Shopify)
-  const latestDrops = (await getProducts({ sortKey: 'CREATED_AT', reverse: true })).slice(0, 4);
+  // Fetch all data in parallel to reduce load time
+  const [latestDropsData, bestsellersData, siteConfigData] = await Promise.all([
+    getProducts({ sortKey: 'CREATED_AT', reverse: true }),
+    getCollectionProducts({ collection: 'bestsellers' }),
+    supabase.from('site_config').select('hero_images').single()
+  ]);
 
-  // Fetch Bestsellers (limit to 4 for homepage)
-  // Only show if "bestsellers" collection exists in Shopify
-  const bestsellers = (await getCollectionProducts({ collection: 'bestsellers' })).slice(0, 4);
+  const latestDrops = latestDropsData.slice(0, 4);
+  const bestsellers = bestsellersData.slice(0, 4);
 
-
-
-  // Fetch Site Config from Supabase
+  // Process Site Config
   let heroConfig = {
     headline: "ELEVATE YOUR EVERYDAY",
-    images: [] as string[] // No fallback - use what's in database
+    images: [] as string[]
   };
 
-  try {
-    const { data } = await supabase
-      .from('site_config')
-      .select('hero_images')
-      .single();
+  if (siteConfigData.data && siteConfigData.data.hero_images) {
+    const images = Array.isArray(siteConfigData.data.hero_images) ? siteConfigData.data.hero_images : [];
+    heroConfig.images = images;
+  }
 
-    if (data && data.hero_images) {
-      // Data is already a JSONB array, no parsing needed
-      const images = Array.isArray(data.hero_images) ? data.hero_images : [];
-      heroConfig.images = images; // Use whatever is in DB, even if empty
-    }
-  } catch (error) {
-    console.error("Supabase config fetch error:", error);
+  if (siteConfigData.error) {
+    console.error("Supabase config fetch error:", siteConfigData.error);
   }
 
   // Helper to map Shopify Product to Frontend Product shape
