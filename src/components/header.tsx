@@ -18,6 +18,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import SearchDialog from './search-dialog';
+import AuthDialog from './auth-dialog';
 
 // Categories will be fetched from Shopify dynamically
 const linkStyles = "text-base font-medium text-foreground/80 hover:text-primary transition-colors relative group after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-0 after:bg-[hsl(var(--accent))] hover:after:w-full after:transition-all after:duration-300";
@@ -117,6 +118,7 @@ export default function Header() {
   const { toggleCart, cartItemCount } = useCart();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const handleLinkClick = () => {
     setIsSheetOpen(false);
@@ -159,7 +161,7 @@ export default function Header() {
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onClick={() => setIsAuthOpen(true)}>
               <User className="h-5 w-5" />
               <span className="sr-only">Account</span>
             </Button>
@@ -177,6 +179,7 @@ export default function Header() {
       </header>
 
       <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
+      <AuthDialog open={isAuthOpen} onOpenChange={setIsAuthOpen} />
     </>
   );
 }

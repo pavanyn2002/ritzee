@@ -11,25 +11,17 @@ import { ArrowRight } from 'lucide-react';
 import ContactSection from '@/components/contact-section';
 import BlogSection from '@/components/blog-section';
 import { siteConfig } from '@/data/site-config';
+import LatestDropsCarousel from '@/components/latest-drops-carousel';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  // Fetch Latest Drops
-  let latestDrops = await getCollectionProducts({ collection: 'latest-drops' });
+  // Fetch 4 Latest Products (most recently added to Shopify)
+  const latestDrops = (await getProducts({ sortKey: 'CREATED_AT', reverse: true })).slice(0, 4);
 
-  if (latestDrops.length === 0) {
-    latestDrops = await getProducts({ sortKey: 'CREATED_AT', reverse: true });
-    latestDrops = latestDrops.slice(0, 3);
-  }
-
-  // Fetch Bestsellers
-  let bestsellers = await getCollectionProducts({ collection: 'bestsellers' });
-
-  if (bestsellers.length === 0) {
-    bestsellers = await getProducts({ sortKey: 'BEST_SELLING' });
-    bestsellers = bestsellers.slice(0, 4);
-  }
+  // Fetch Bestsellers (limit to 4 for homepage)
+  // Only show if "bestsellers" collection exists in Shopify
+  const bestsellers = (await getCollectionProducts({ collection: 'bestsellers' })).slice(0, 4);
 
   // Fetch Site Config from Supabase
   let heroConfig = {
@@ -82,46 +74,68 @@ export default async function Home() {
       </Marquee>
 
       {/* Bestsellers Section */}
-      {bestsellers.length > 0 && (
-        <section className="py-12 bg-muted/5">
+      <section className="py-12 bg-muted/5">
+        <div className="w-full px-4 md:px-8">
+          <ScrollAnimation>
+            <h2
+              className="text-2xl md:text-3xl lg:text-4xl font-headline font-black tracking-tight mb-8 text-center uppercase"
+              style={{
+                color: '#BFFF00',
+                textShadow: '3px 3px 0px #8B00FF, 6px 6px 0px rgba(139, 0, 255, 0.5)'
+              }}
+            >
+              BESTSELLERS
+            </h2>
+          </ScrollAnimation>
+
+          {bestsellers.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {bestsellers.map((product, index) => (
+                  <ScrollAnimation key={product.id} delay={index * 100}>
+                    <ProductCard product={mapProduct(product)} />
+                  </ScrollAnimation>
+                ))}
+              </div>
+              <ScrollAnimation delay={400} className="mt-10 text-center">
+                <Button asChild size="lg" variant="outline" className="font-bold h-12 rounded-none border-2">
+                  <Link href="/bestsellers">View All Bestsellers <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                </Button>
+              </ScrollAnimation>
+            </>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No bestsellers yet. Check back soon!</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+
+      {/* Latest Drops Section - Only show if products exist */}
+      {latestDrops.length > 0 && (
+        <section className="py-12 md:py-20" id="latest-drops">
           <div className="w-full px-4 md:px-8">
             <ScrollAnimation>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold tracking-tight mb-8 text-center text-primary">
-                Bestsellers
+              <h2
+                className="text-2xl md:text-3xl lg:text-4xl font-headline font-black tracking-tight mb-8 text-center uppercase"
+                style={{
+                  color: '#BFFF00',
+                  textShadow: '3px 3px 0px #8B00FF, 6px 6px 0px rgba(139, 0, 255, 0.5)'
+                }}
+              >
+                Latest Drops
               </h2>
             </ScrollAnimation>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {bestsellers.map((product, index) => (
-                <ScrollAnimation key={product.id} delay={index * 100}>
-                  <ProductCard product={mapProduct(product)} />
-                </ScrollAnimation>
-              ))}
-            </div>
+            <LatestDropsCarousel products={latestDrops.map(mapProduct)} />
+            <ScrollAnimation delay={400} className="mt-10 text-center">
+              <Button asChild size="lg" variant="outline" className="font-bold h-12 rounded-none border-2">
+                <Link href="/shop">View All Products <ArrowRight className="ml-2 w-4 h-4" /></Link>
+              </Button>
+            </ScrollAnimation>
           </div>
         </section>
       )}
-
-      <section className="py-12 md:py-20" id="latest-drops">
-        <div className="w-full px-4 md:px-8">
-          <ScrollAnimation>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold tracking-tight mb-8 text-center">
-              Latest Drops
-            </h2>
-          </ScrollAnimation>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestDrops.map((product, index) => (
-              <ScrollAnimation key={product.id} delay={index * 100}>
-                <ProductCard product={mapProduct(product)} />
-              </ScrollAnimation>
-            ))}
-          </div>
-          <ScrollAnimation delay={300} className="mt-10 text-center">
-            <Button asChild size="lg" variant="outline" className="font-bold h-12 rounded-none border-2">
-              <Link href="/shop">View All Products <ArrowRight className="ml-2 w-4 h-4" /></Link>
-            </Button>
-          </ScrollAnimation>
-        </div>
-      </section>
 
       <BlogSection />
 

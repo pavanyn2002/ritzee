@@ -32,9 +32,9 @@ export default function Footer() {
           {/* Shop */}
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-sm uppercase tracking-wider">Shop</h3>
-            <FooterLink href="/shop">New Arrivals</FooterLink>
+            <FooterLink href="/#latest-drops">New Arrivals</FooterLink>
             <FooterLink href="/shop">Collections</FooterLink>
-            <FooterLink href="/shop">Bestsellers</FooterLink>
+            <FooterLink href="/bestsellers">Bestsellers</FooterLink>
           </div>
 
           {/* About */}

@@ -71,7 +71,7 @@ export async function getProducts({
     sortKey?: 'TITLE' | 'BEST_SELLING' | 'CREATED_AT' | 'PRICE';
     reverse?: boolean;
     query?: string;
-}): Promise<Product[]> {
+} = {}): Promise<Product[]> {
     const res = await shopifyFetch<{ data: { products: Connection<Product> } }>({
         query: getProductsQuery,
         variables: {
@@ -107,4 +107,58 @@ export async function getCollectionProducts({
     if (!res.body.data.collection?.products) return [];
 
     return removeEdgesAndNodes(res.body.data.collection.products);
+}
+
+// Cart API Functions
+import {
+    CREATE_CART_MUTATION,
+    ADD_TO_CART_MUTATION,
+    UPDATE_CART_MUTATION,
+    REMOVE_FROM_CART_MUTATION,
+    GET_CART_QUERY,
+} from './mutations';
+
+export async function createCart(lines: { merchandiseId: string; quantity: number }[]) {
+    const res = await shopifyFetch<any>({
+        query: CREATE_CART_MUTATION,
+        variables: { input: { lines } },
+        cache: 'no-store',
+    });
+    return res.body.data.cartCreate.cart;
+}
+
+export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
+    const res = await shopifyFetch<any>({
+        query: ADD_TO_CART_MUTATION,
+        variables: { cartId, lines },
+        cache: 'no-store',
+    });
+    return res.body.data.cartLinesAdd.cart;
+}
+
+export async function updateCart(cartId: string, lines: { id: string; quantity: number }[]) {
+    const res = await shopifyFetch<any>({
+        query: UPDATE_CART_MUTATION,
+        variables: { cartId, lines },
+        cache: 'no-store',
+    });
+    return res.body.data.cartLinesUpdate.cart;
+}
+
+export async function removeFromCart(cartId: string, lineIds: string[]) {
+    const res = await shopifyFetch<any>({
+        query: REMOVE_FROM_CART_MUTATION,
+        variables: { cartId, lineIds },
+        cache: 'no-store',
+    });
+    return res.body.data.cartLinesRemove.cart;
+}
+
+export async function getCart(cartId: string) {
+    const res = await shopifyFetch<any>({
+        query: GET_CART_QUERY,
+        variables: { cartId },
+        cache: 'no-store',
+    });
+    return res.body.data.cart;
 }

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import type { Product } from '@/types/product';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, X } from 'lucide-react';
+import { Search, X, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -17,26 +17,40 @@ interface SearchDialogProps {
 
 export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const [query, setQuery] = useState('');
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(false);
 
     // Reset query when dialog closes
     useEffect(() => {
         if (!open) {
             setQuery('');
+            setProducts([]);
         }
     }, [open]);
 
-    // Search will be implemented with Shopify API later
-    const products: Product[] = [];
+    // Debounced search effect
+    useEffect(() => {
+        if (!query.trim()) {
+            setProducts([]);
+            return;
+        }
 
-    const filteredProducts = useMemo(() => {
-        if (!query.trim()) return [];
+        const timeoutId = setTimeout(async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`/api/shopify/search?q=${encodeURIComponent(query)}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProducts(data.products || []);
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+            } finally {
+                setLoading(false);
+            }
+        }, 300); // 300ms debounce
 
-        const searchTerm = query.toLowerCase().trim();
-        return products.filter((product) =>
-            product.name.toLowerCase().includes(searchTerm) ||
-            product.description.toLowerCase().includes(searchTerm) ||
-            product.category.toLowerCase().includes(searchTerm)
-        );
+        return () => clearTimeout(timeoutId);
     }, [query]);
 
     const handleProductClick = () => {
@@ -76,7 +90,12 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
                             <Search className="h-12 w-12 mx-auto mb-4 opacity-20" />
                             <p>Start typing to search products...</p>
                         </div>
-                    ) : filteredProducts.length === 0 ? (
+                    ) : loading ? (
+                        <div className="p-8 text-center text-muted-foreground">
+                            <Loader2 className="h-8 w-8 mx-auto mb-4 animate-spin" />
+                            <p>Searching...</p>
+                        </div>
+                    ) : products.length === 0 ? (
                         <div className="p-8 text-center text-muted-foreground">
                             <p className="text-lg font-medium">No products found</p>
                             <p className="text-sm mt-1">Try searching for something else</p>
@@ -84,10 +103,10 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
                     ) : (
                         <div className="p-4">
                             <p className="text-sm text-muted-foreground mb-4">
-                                Found {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+                                Found {products.length} product{products.length !== 1 ? 's' : ''}
                             </p>
                             <div className="space-y-2">
-                                {filteredProducts.map((product) => (
+                                {products.map((product) => (
                                     <Link
                                         key={product.id}
                                         href={`/products/${product.slug}`}

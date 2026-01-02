@@ -11,7 +11,7 @@ import { Separator } from './ui/separator';
 const FREE_SHIPPING_THRESHOLD = 999;
 
 export default function Cart() {
-  const { isCartOpen, closeCart, cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const { isCartOpen, closeCart, cartItems, cartTotal, removeFromCart, updateQuantity, checkoutUrl, loading } = useCart();
 
   const shippingProgress = Math.min((cartTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -64,7 +64,7 @@ export default function Cart() {
             <ScrollArea className="flex-1 px-6">
               <div className="flex flex-col gap-4 py-4">
                 {cartItems.map((item) => (
-                  <div key={item.product.id} className="group relative flex gap-4 p-3 rounded-lg bg-card border border-border/50 hover:border-primary/30 transition-colors">
+                  <div key={item.lineId} className="group relative flex gap-4 p-3 rounded-lg bg-card border border-border/50 hover:border-primary/30 transition-colors">
                     {/* Product Image */}
                     <div className="relative h-20 w-20 overflow-hidden rounded-md bg-muted flex-shrink-0">
                       <Image
@@ -85,14 +85,14 @@ export default function Cart() {
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-2 mt-2">
                         <button
-                          onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => updateQuantity(item.lineId, Math.max(1, item.quantity - 1))}
                           className="w-7 h-7 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className="w-8 text-center font-semibold text-sm">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.lineId, item.quantity + 1)}
                           className="w-7 h-7 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
                           <Plus className="w-3 h-3" />
@@ -102,7 +102,7 @@ export default function Cart() {
 
                     {/* Remove Button */}
                     <button
-                      onClick={() => removeFromCart(item.product.id)}
+                      onClick={() => removeFromCart(item.lineId)}
                       className="absolute top-2 right-2 w-6 h-6 rounded-full bg-destructive/10 text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground transition-all"
                     >
                       <X className="w-3 h-3" />
@@ -138,9 +138,14 @@ export default function Cart() {
               <p className="text-xs text-foreground/50 text-center">Shipping calculated at checkout</p>
 
               {/* Checkout Button */}
-              <Button size="lg" className="w-full h-12 font-bold text-base gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity">
+              <Button
+                size="lg"
+                className="w-full h-12 font-bold text-base gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
+                onClick={() => checkoutUrl && (window.location.href = checkoutUrl)}
+                disabled={!checkoutUrl || loading}
+              >
                 <Sparkles className="w-4 h-4" />
-                Checkout Now
+                {loading ? 'Loading...' : 'Checkout Now'}
               </Button>
 
               {/* Continue Shopping */}
