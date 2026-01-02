@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { products, Product } from '@/lib/products';
+import type { Product } from '@/types/product';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Search, X } from 'lucide-react';
@@ -24,6 +24,9 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
             setQuery('');
         }
     }, [open]);
+
+    // Search will be implemented with Shopify API later
+    const products: Product[] = [];
 
     const filteredProducts = useMemo(() => {
         if (!query.trim()) return [];

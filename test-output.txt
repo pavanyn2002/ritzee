@@ -1,0 +1,9 @@
+Testing connection to: https://wcsacvbujgxfactqqqga.supabase.co
+Using Key: sb_publishable_nG8cGuTYs4rulV0Rf00-4g_20FGF6DM
+Result: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.site_config' in the schema cache"
+}
+Connection seems okay, but encountered another error: Could not find the table 'public.site_config' in the schema cache

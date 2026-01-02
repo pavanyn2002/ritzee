@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Logo } from '@/components/ui/logo';
 import { useCart } from '@/context/cart-context';
-import React, { useState } from 'react';
-import { products } from '@/lib/products';
+import React, { useState, useEffect } from 'react';
+// Categories are now managed in Shopify
 import { cn } from '@/lib/utils';
 import {
   NavigationMenu,
@@ -19,42 +19,72 @@ import {
 } from "@/components/ui/navigation-menu"
 import SearchDialog from './search-dialog';
 
-const categories = [...new Set(products.map(p => p.category))];
-
+// Categories will be fetched from Shopify dynamically
 const linkStyles = "text-base font-medium text-foreground/80 hover:text-primary transition-colors relative group after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-0 after:bg-[hsl(var(--accent))] hover:after:w-full after:transition-all after:duration-300";
 
-const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => (
-  <nav className={className}>
-    <Link href="/" onClick={onLinkClick} className={linkStyles}>Home</Link>
 
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className={cn(linkStyles, "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0")}>Shop</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="flex flex-wrap justify-center w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px]">
-              {categories.map((category) => (
-                <ListItem
-                  key={category}
-                  href={`/shop?category=${encodeURIComponent(category)}`}
-                  title={category}
-                  onClick={onLinkClick}
-                >
-                  Browse our collection of {category.toLowerCase()}.
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-    <Link href="/bestsellers" onClick={onLinkClick} className={linkStyles}>Bestsellers</Link>
-    <Link href="/blog" onClick={onLinkClick} className={linkStyles}>Blog</Link>
-    <Link href="/about" onClick={onLinkClick} className={linkStyles}>About</Link>
-    <Link href="/faq" onClick={onLinkClick} className={linkStyles}>FAQ</Link>
-  </nav>
-);
+  useEffect(() => {
+    // Fetch categories from Shopify on component mount
+    async function fetchCategories() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/shopify/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data.categories || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  return (
+    <nav className={className}>
+      <Link href="/" onClick={onLinkClick} className={linkStyles}>Home</Link>
+
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className={cn(linkStyles, "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0")}>Shop</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="flex flex-wrap justify-center w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px]">
+                {loading ? (
+                  <li className="text-sm text-muted-foreground p-3">Loading categories...</li>
+                ) : categories.length === 0 ? (
+                  <li className="text-sm text-muted-foreground p-3">No categories available</li>
+                ) : (
+                  categories.map((category) => (
+                    <ListItem
+                      key={category}
+                      href={`/shop?category=${encodeURIComponent(category)}`}
+                      title={category}
+                      onClick={onLinkClick}
+                    >
+                      Browse our collection of {category.toLowerCase()}.
+                    </ListItem>
+                  ))
+                )}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+
+      <Link href="/bestsellers" onClick={onLinkClick} className={linkStyles}>Bestsellers</Link>
+      <Link href="/blog" onClick={onLinkClick} className={linkStyles}>Blog</Link>
+      <Link href="/about" onClick={onLinkClick} className={linkStyles}>About</Link>
+      <Link href="/faq" onClick={onLinkClick} className={linkStyles}>FAQ</Link>
+    </nav>
+  );
+};
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -95,7 +125,7 @@ export default function Header() {
   return (
     <>
       <header className="w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center px-4 md:px-6">
+        <div className="w-full flex h-16 items-center px-4 md:px-8">
           <div className="mr-12 hidden md:flex">
             <Logo />
           </div>

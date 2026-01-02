@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { ScrollAnimation } from './scroll-animation';
-import { products } from '@/lib/products';
 import {
   Carousel,
   CarouselContent,
@@ -15,41 +14,33 @@ import Autoplay from 'embla-carousel-autoplay';
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  headline?: string;
+  images?: string[];
+}
+
+export default function HeroSection({ headline, images }: HeroSectionProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if we've already shown the animation in this session
-    // const hasLoaded = sessionStorage.getItem('ritzee-hero-loaded');
-
-    // if (hasLoaded) {
-    //   setLoading(false);
-    //   return;
-    // }
-
     const timer = setTimeout(() => {
       setLoading(false);
-      // sessionStorage.setItem('ritzee-hero-loaded', 'true');
-    }, 2500); // 4.5s loading time
-
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
-  const heroImages = [
-    ...products.map(p => ({ id: p.id, image: p.image, name: p.name, imageHint: p.imageHint })),
-    {
-      id: 'extra-1',
-      image: '/products/lifestyle1.png',
-      name: 'Extra fashion shot',
-      imageHint: 'fashion runway'
-    },
-    {
-      id: 'extra-2',
-      image: '/products/lifestyle2.png',
-      name: 'Extra fashion shot 2',
-      imageHint: 'clothing detail'
-    }
-  ]
+  const defaultImages = [
+    '/products/lifestyle1.png',
+    '/products/lifestyle2.png'
+  ];
+
+  // Use provided images, or fallback to defaults only if images prop is undefined
+  const displayImages = (images && images.length > 0 ? images : (images === undefined ? defaultImages : [])).map((url, i) => ({
+    id: `hero-${i}`,
+    image: url,
+    name: 'Hero Image',
+    imageHint: 'fashion shot'
+  }));
 
   return (
     <section className="relative w-full h-[calc(100vh-4rem)] overflow-hidden flex flex-col items-center justify-center group/hero">
@@ -68,23 +59,54 @@ export default function HeroSection() {
           }}
         >
           <CarouselContent>
-            {heroImages.map((product, index) => (
-              <CarouselItem key={product.id}>
-                <div className="relative w-full h-[calc(100vh-4rem)]">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className={cn(
-                      "object-cover transition-opacity duration-1000",
-                      loading ? "opacity-20" : "opacity-100"
+            {displayImages.map((item, index) => {
+              const url = item.image;
+              const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
+              const isGlb = url.match(/\.(glb|gltf)$/i);
+              const isImage = !isVideo && !isGlb;
+
+              return (
+                <CarouselItem key={item.id}>
+                  <div className="relative w-full h-[calc(100vh-4rem)]">
+                    {isImage && (
+                      <Image
+                        src={url}
+                        alt={item.name}
+                        fill
+                        className={cn(
+                          "object-cover transition-opacity duration-1000",
+                          loading ? "opacity-20" : "opacity-100"
+                        )}
+                        data-ai-hint={item.imageHint}
+                        priority={index === 0}
+                      />
                     )}
-                    data-ai-hint={product.imageHint}
-                    priority={index === 0}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
+                    {isVideo && (
+                      <video
+                        src={url}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className={cn(
+                          "w-full h-full object-cover transition-opacity duration-1000",
+                          loading ? "opacity-20" : "opacity-100"
+                        )}
+                      />
+                    )}
+                    {isGlb && (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-background">
+                        <div className="text-center space-y-4">
+                          <div className="text-6xl">🎨</div>
+                          <p className="text-xl font-bold text-primary">3D Model</p>
+                          <p className="text-sm text-muted-foreground">GLB viewer coming soon</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
         </Carousel>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
@@ -118,7 +140,7 @@ export default function HeroSection() {
               "w-full text-2xl md:text-4xl lg:text-5xl font-black font-headline italic uppercase tracking-tighter text-shimmer transition-transform duration-1000 delay-500 md:whitespace-nowrap",
               loading ? "translate-y-full" : "translate-y-0"
             )}>
-              Unleash Your Alter Ego&nbsp;
+              {headline || "Unleash Your Alter Ego"}&nbsp;
             </p>
           </div>
 

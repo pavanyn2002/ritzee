@@ -10,8 +10,11 @@ export default function Marquee({
   return (
     <div className={cn("relative flex w-full overflow-hidden py-8 border-y bg-background", className)}>
       <div className="flex w-max animate-marquee">
-        <div className="flex w-max items-center">{children}</div>
-        <div className="flex w-max items-center">{children}</div>
+        {[...Array(16)].map((_, i) => (
+          <div key={i} className="flex w-max items-center">
+            {children}
+          </div>
+        ))}
       </div>
     </div>
   );

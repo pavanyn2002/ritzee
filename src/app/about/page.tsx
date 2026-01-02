@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { ScrollAnimation } from '@/components/scroll-animation';
-import { products } from '@/lib/products';
 
 export default function AboutPage() {
   return (

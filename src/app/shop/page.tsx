@@ -1,119 +1,136 @@
 
-'use client';
-
 import ProductCard from '@/components/product-card';
+import { getProducts } from '@/lib/shopify';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { ScrollAnimation } from '@/components/scroll-animation';
-import { products } from '@/lib/products';
-import { useSearchParams } from 'next/navigation';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+} from "@/components/ui/carousel";
 
-export default function ShopPage() {
-  const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category');
+export const dynamic = 'force-dynamic';
 
-  const allCategories = [...new Set(products.map((p) => p.category))];
+export default async function ShopPage() {
+  // Fetch all products from Shopify
+  const allProducts = await getProducts();
 
-  const filteredCategories = categoryParam
-    ? allCategories.filter((c) => c === categoryParam)
-    : allCategories;
+  // Map products to the format expected by ProductCard
+  const products = allProducts.map((p) => ({
+    id: p.id,
+    slug: p.handle,
+    name: p.title,
+    description: p.description,
+    price: parseFloat(p.priceRange.minVariantPrice.amount),
+    originalPrice: p.compareAtPriceRange?.minVariantPrice?.amount
+      ? parseFloat(p.compareAtPriceRange.minVariantPrice.amount)
+      : undefined,
+    image: p.featuredImage?.url || '/placeholder.png',
+    imageHint: 'product',
+    modelUrl: p.media?.edges?.find((edge: any) => edge.node.__typename === 'Model3d')?.node?.sources?.[0]?.url || '',
+    category: p.productType || 'All Products',
+  }));
 
-  const pageTitle = categoryParam ? `${categoryParam}` : 'Our Collection';
+  // Group products by category
+  const categoriesMap = new Map<string, typeof products>();
+  products.forEach((product) => {
+    const category = product.category;
+    if (!categoriesMap.has(category)) {
+      categoriesMap.set(category, []);
+    }
+    categoriesMap.get(category)!.push(product);
+  });
 
-  // When viewing a specific category, show all products in a grid
-  if (categoryParam) {
-    const categoryProducts = products.filter((p) => p.category === categoryParam);
+  // Convert to array of categories with products
+  const displayCategories = Array.from(categoriesMap.entries()).map(([name, products]) => ({
+    name,
+    slug: name.toLowerCase().replace(/\s+/g, '-'),
+    products,
+  }));
 
+  // If no products, show empty state
+  if (products.length === 0) {
     return (
-      <section className="py-16 sm:py-24 min-h-[calc(100vh-12rem)]">
+      <section className="py-20">
         <div className="container px-4 md:px-6">
-          <ScrollAnimation>
-            <div className="flex items-center gap-4 mb-8">
-              <Button asChild variant="ghost" size="icon">
-                <Link href="/shop">
-                  <ArrowLeft className="h-5 w-5" />
-                </Link>
-              </Button>
-              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                {pageTitle}
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
+            <ScrollAnimation>
+              <h1 className="text-3xl font-black font-headline tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                THE COLLECTION
               </h1>
-            </div>
-            <p className="text-muted-foreground mb-12">
-              Showing {categoryProducts.length} products
+            </ScrollAnimation>
+            <ScrollAnimation delay={200}>
+              <p className="max-w-[700px] text-muted-foreground md:text-xl">
+                Explore our exclusive range of dark luxury streetwear.
+              </p>
+            </ScrollAnimation>
+          </div>
+          <div className="text-center py-20">
+            <p className="text-xl text-muted-foreground mb-4">No products yet</p>
+            <p className="text-sm text-muted-foreground">
+              Add products to your Shopify store to display them here.
             </p>
-          </ScrollAnimation>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {categoryProducts.map((product, index) => (
-              <ScrollAnimation key={product.id} delay={index * 50}>
-                <ProductCard product={product} />
-              </ScrollAnimation>
-            ))}
           </div>
         </div>
       </section>
     );
   }
 
-  // Default view: show all categories with carousels
   return (
-    <section className="py-8 sm:py-12">
+    <section className="py-20">
       <div className="container px-4 md:px-6">
-        <ScrollAnimation>
-          <h1 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8 text-center">
-            {pageTitle}
-          </h1>
-        </ScrollAnimation>
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
+          <ScrollAnimation>
+            <h1 className="text-3xl font-black font-headline tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              THE COLLECTION
+            </h1>
+          </ScrollAnimation>
+          <ScrollAnimation delay={200}>
+            <p className="max-w-[700px] text-muted-foreground md:text-xl">
+              Explore our exclusive range of dark luxury streetwear.
+            </p>
+          </ScrollAnimation>
+        </div>
 
-        <div className="space-y-10">
-          {filteredCategories.map((category, index) => {
-            const categoryProducts = products.filter(
-              (p) => p.category === category
-            );
+        <div className="space-y-24">
+          {displayCategories.map((category, index) => {
+            const categoryProducts = category.products;
+
             if (categoryProducts.length === 0) return null;
 
-            // Middle Category (Index 1) - Rotating Carousel with 5 items (smaller cards)
-            if (index === 1) {
-              return (
-                <div key={category}>
-                  <ScrollAnimation>
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-headline font-bold tracking-tighter">
-                        {category}
-                      </h2>
-                      <Button asChild variant="outline" size="sm" className="hidden sm:flex h-8 text-xs">
-                        <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2 h-3 w-3" /></Link>
-                      </Button>
-                    </div>
-                  </ScrollAnimation>
+            // Layout Logic (keeping the aesthetic variation)
+            const isMiddleRow = index % 3 === 1;
+
+            return (
+              <div key={category.slug || index} id={category.slug} className="space-y-8">
+                <ScrollAnimation>
+                  <div className="flex items-center justify-between border-b pb-4">
+                    <h2 className="text-2xl font-bold font-headline tracking-tight uppercase text-primary">
+                      {category.name}
+                    </h2>
+                    <span className="text-sm text-muted-foreground">
+                      {categoryProducts.length} items
+                    </span>
+                  </div>
+                </ScrollAnimation>
+
+                <ScrollAnimation delay={200}>
                   <Carousel
                     opts={{
-                      align: 'start',
+                      align: "start",
                       loop: true,
                     }}
-                    plugins={[
-                      Autoplay({
-                        delay: 3500,
-                        stopOnInteraction: true,
-                      }),
-                    ]}
                     className="w-full"
                   >
                     <CarouselContent className="-ml-3">
-                      {categoryProducts.map((product) => (
+                      {categoryProducts.map((product: any) => (
                         <CarouselItem
                           key={product.id}
-                          className="pl-3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                          className={`pl-3 ${isMiddleRow ? 'sm:basis-1/3 md:basis-1/4 lg:basis-1/5' : 'sm:basis-1/2 md:basis-[30%] lg:basis-[22%]'}`}
                         >
                           <div className="p-1 h-full">
                             <ProductCard product={product} />
@@ -121,65 +138,12 @@ export default function ShopPage() {
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    <CarouselPrevious className="hidden lg:flex left-2 h-8 w-8" />
-                    <CarouselNext className="hidden lg:flex right-2 h-8 w-8" />
+                    <div className="flex justify-end gap-2 mt-4">
+                      <CarouselPrevious className="static translate-y-0" />
+                      <CarouselNext className="static translate-y-0" />
+                    </div>
                   </Carousel>
-                  <div className="mt-4 text-center sm:hidden">
-                    <Button asChild variant="outline" size="sm">
-                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
-                    </Button>
-                  </div>
-                </div>
-              );
-            }
-
-            // Top and Bottom Categories (Index 0 & 2) - Carousel with lighter layout
-            return (
-              <div key={category}>
-                <ScrollAnimation>
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-headline font-bold tracking-tighter">
-                      {category}
-                    </h2>
-                    <Button asChild variant="outline" size="sm" className="hidden sm:flex h-8 text-xs">
-                      <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All <ArrowRight className="ml-2 h-3 w-3" /></Link>
-                    </Button>
-                  </div>
                 </ScrollAnimation>
-                <Carousel
-                  opts={{
-                    align: 'center',
-                    loop: true,
-                  }}
-                  plugins={[
-                    Autoplay({
-                      delay: 4000,
-                      stopOnInteraction: true,
-                    }),
-                  ]}
-                  className="w-full"
-                >
-                  <CarouselContent className="-ml-3">
-                    {categoryProducts.map((product) => (
-                      <CarouselItem
-                        key={product.id}
-                        className="pl-3 sm:basis-1/2 md:basis-[30%] lg:basis-[22%]"
-                      >
-                        {/* basis-[22%] means even smaller items, more visible at once */}
-                        <div className="p-1 h-full">
-                          <ProductCard product={product} />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden lg:flex left-2 h-8 w-8" />
-                  <CarouselNext className="hidden lg:flex right-2 h-8 w-8" />
-                </Carousel>
-                <div className="mt-4 text-center sm:hidden">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/shop?category=${encodeURIComponent(category)}`}>View All {category}</Link>
-                  </Button>
-                </div>
               </div>
             );
           })}

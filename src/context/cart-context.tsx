@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '@/lib/products';
+import { Product } from '@/types/product';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 export type CartItem = {
@@ -34,7 +34,7 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -83,7 +83,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const toggleCart = () => {
     setIsCartOpen(prev => !prev);
   };
-  
+
   const closeCart = () => {
     setIsCartOpen(false);
   }

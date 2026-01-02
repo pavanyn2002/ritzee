@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { products } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
@@ -20,7 +19,10 @@ const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 export default function ProductPage() {
   const params = useParams();
   const slug = params.slug;
-  const product = products.find((p) => p.slug === slug);
+
+  // Products will come from Shopify - for now show not found
+  const product = null;
+
   const { addToCart } = useCart();
   const { toast } = useToast();
   const [selectedSize, setSelectedSize] = useState('');
@@ -104,8 +106,8 @@ export default function ProductPage() {
                       key={size}
                       onClick={() => setSelectedSize(size)}
                       className={`w-12 h-12 border-2 font-semibold transition-all hover:border-primary ${selectedSize === size
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'border-border hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'border-border hover:bg-muted'
                         }`}
                     >
                       {size}

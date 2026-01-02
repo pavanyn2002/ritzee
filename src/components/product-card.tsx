@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/types/product';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -36,15 +36,26 @@ export default function ProductCard({ product }: ProductCardProps) {
               </Badge>
             </div>
           )}
+          {product.modelUrl && (
+            <div className="absolute top-3 right-3">
+              <Badge className="bg-blue-600 text-white font-bold px-2 py-1 text-xs animate-pulse">
+                3D VIEW
+              </Badge>
+            </div>
+          )}
         </div>
         <CardHeader className="pb-2">
           <CardTitle className="font-headline text-lg group-hover:text-primary transition-colors">
             {product.name}
           </CardTitle>
           <div className="flex items-center gap-2">
-            <p className="text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
+            <p className="text-lg font-bold text-primary">
+              {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(product.price)}
+            </p>
             {hasDiscount && (
-              <p className="text-sm text-foreground/50 line-through">${product.originalPrice!.toFixed(2)}</p>
+              <p className="text-sm text-foreground/50 line-through">
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(product.originalPrice!)}
+              </p>
             )}
           </div>
         </CardHeader>

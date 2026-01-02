@@ -35,7 +35,7 @@ export default function ContactSection() {
 
     return (
         <section className="py-16 md:py-24 bg-muted/30">
-            <div className="container px-4 md:px-6">
+            <div className="w-full px-4 md:px-8">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <ScrollAnimation>
                         <div className="space-y-4">

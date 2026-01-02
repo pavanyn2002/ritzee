@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag } from 'lucide-react';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/types/product';
 
 interface StickyAddToCartProps {
     product: Product;

@@ -20,7 +20,7 @@ const FooterLink = ({ href, children }: { href: string; children: React.ReactNod
 export default function Footer() {
   return (
     <footer className="bg-background border-t border-border/40">
-      <div className="container px-4 md:px-6 py-2 md:py-4">
+      <div className="w-full px-4 md:px-8 py-2 md:py-4">
         {/* Main Footer Content - All in one row on desktop */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Logo Section */}
@@ -34,7 +34,7 @@ export default function Footer() {
             <h3 className="font-semibold text-sm uppercase tracking-wider">Shop</h3>
             <FooterLink href="/shop">New Arrivals</FooterLink>
             <FooterLink href="/shop">Collections</FooterLink>
-            <FooterLink href="/shop">Sale</FooterLink>
+            <FooterLink href="/shop">Bestsellers</FooterLink>
           </div>
 
           {/* About */}
