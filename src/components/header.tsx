@@ -17,6 +17,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import SearchDialog from './search-dialog';
 import AuthDialog from './auth-dialog';
 
@@ -114,6 +120,71 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem"
 
 
+// Mobile Navigation Component using Accordion for better UX
+const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/shopify/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data.categories || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  return (
+    <nav className={className}>
+      <Link href="/" onClick={onLinkClick} className="text-lg font-medium py-2">Home</Link>
+
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="shop" className="border-b-0">
+          <AccordionTrigger className="text-lg font-medium py-2 hover:no-underline">Shop</AccordionTrigger>
+          <AccordionContent>
+            <ul className="flex flex-col space-y-2 pl-4">
+              <li>
+                <Link href="/shop" onClick={onLinkClick} className="block py-2 text-muted-foreground hover:text-primary">
+                  View All Collections
+                </Link>
+              </li>
+              {loading ? (
+                <li className="text-sm text-muted-foreground py-2">Loading...</li>
+              ) : (
+                categories.map((category) => (
+                  <li key={category}>
+                    <Link
+                      href={`/shop?category=${encodeURIComponent(category)}`}
+                      onClick={onLinkClick}
+                      className="block py-2 text-muted-foreground hover:text-primary"
+                    >
+                      {category}
+                    </Link>
+                  </li>
+                ))
+              )}
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <Link href="/bestsellers" onClick={onLinkClick} className="text-lg font-medium py-2">Bestsellers</Link>
+      <Link href="/blog" onClick={onLinkClick} className="text-lg font-medium py-2">Blog</Link>
+      <Link href="/about" onClick={onLinkClick} className="text-lg font-medium py-2">About</Link>
+      <Link href="/faq" onClick={onLinkClick} className="text-lg font-medium py-2">FAQ</Link>
+    </nav>
+  );
+};
+
 export default function Header() {
   const { toggleCart, cartItemCount } = useCart();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -143,13 +214,13 @@ export default function Header() {
               <SheetContent side="left">
                 <div className="flex flex-col p-6">
                   <Logo />
-                  <NavLinks className="flex flex-col space-y-4 mt-8" onLinkClick={handleLinkClick} />
+                  <MobileNavLinks className="flex flex-col space-y-4 mt-8" onLinkClick={handleLinkClick} />
                 </div>
               </SheetContent>
             </Sheet>
           </div>
 
-          <div className="flex flex-1 items-center justify-center md:justify-center">
+          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:flex md:flex-1 md:items-center md:justify-center">
             <div className="md:hidden">
               <Logo />
             </div>

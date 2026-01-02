@@ -5,112 +5,121 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/com
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Image from 'next/image';
-import { X, ShoppingBag, Plus, Minus, Sparkles, Truck, Shield, RotateCcw } from 'lucide-react';
+import { X, ShoppingBag, Plus, Minus, Sparkles, Truck, Shield, RotateCcw, ArrowRight } from 'lucide-react';
 import { Separator } from './ui/separator';
+import { cn } from '@/lib/utils';
 
-const FREE_SHIPPING_THRESHOLD = 999;
+const FREE_SHIPPING_THRESHOLD = 1000;
 
 export default function Cart() {
   const { isCartOpen, closeCart, cartItems, cartTotal, removeFromCart, updateQuantity, checkoutUrl, loading } = useCart();
 
-  const safeTotal = isNaN(cartTotal) ? 0 : cartTotal;
+  const safeTotal = Number(isNaN(cartTotal) ? 0 : cartTotal);
   const shippingProgress = Math.min((safeTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <Sheet open={isCartOpen} onOpenChange={(open) => !open && closeCart()}>
-      <SheetContent className="flex w-full flex-col p-0 sm:max-w-md bg-background">
+      <SheetContent className="flex w-full flex-col p-0 sm:max-w-md bg-background border-l-4 border-foreground" side="right">
         {/* Header */}
-        <SheetHeader className="px-6 py-4 border-b border-border/50">
-          <SheetTitle className="flex items-center gap-2 text-xl font-headline">
-            <ShoppingBag className="w-5 h-5 text-primary" />
-            Your Cart
+        <SheetHeader className="px-6 py-6 border-b-4 border-foreground bg-primary/10">
+          <SheetTitle className="flex items-center justify-between text-2xl font-black font-headline uppercase tracking-tighter">
+            <span className="flex items-center gap-2">
+              MY HAUL
+              <span className="text-xl">🛒</span>
+            </span>
             {itemCount > 0 && (
-              <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-primary text-primary-foreground rounded-full">
-                {itemCount} {itemCount === 1 ? 'item' : 'items'}
-              </span>
+              <div className="px-3 py-1 text-xs font-bold bg-foreground text-background transform -rotate-2">
+                {itemCount} ITEMS
+              </div>
             )}
           </SheetTitle>
         </SheetHeader>
 
         {cartItems.length > 0 ? (
           <>
-            {/* Free Shipping Progress */}
-            <div className="px-6 py-3 bg-muted/50">
+            {/* Free Shipping Progress: Brutalist Style */}
+            <div className="px-6 py-4 border-b-4 border-foreground bg-background">
               {safeTotal < FREE_SHIPPING_THRESHOLD ? (
-                <div className="space-y-2">
-                  <p className="text-sm text-center">
-                    <span className="text-foreground/60">Add </span>
-                    <span className="font-bold text-primary">₹{(FREE_SHIPPING_THRESHOLD - safeTotal).toFixed(2)}</span>
-                    <span className="text-foreground/60"> more for </span>
-                    <span className="font-semibold">FREE shipping! 🚚</span>
+                <div className="space-y-3">
+                  <p className="text-sm font-bold font-headline uppercase tracking-wide">
+                    Add <span className="text-primary mx-1 px-1 bg-foreground text-background">₹{(FREE_SHIPPING_THRESHOLD - safeTotal).toFixed(0)}</span> for Free Shipping
                   </p>
-                  <div className="h-2 w-full rounded-full bg-background overflow-hidden">
+                  <div className="h-4 w-full border-2 border-foreground p-[2px]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
+                      className="h-full bg-primary transition-all duration-300 relative"
                       style={{ width: `${shippingProgress}%` }}
-                    />
+                    >
+                      {/* Striped pattern overlay */}
+                      <div className="absolute inset-0 bg-[url('/stripes.png')] opacity-20" />
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-2 text-sm font-semibold text-primary">
-                  <Sparkles className="w-4 h-4" />
-                  You've unlocked FREE shipping!
-                  <Sparkles className="w-4 h-4" />
+                <div className="flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-widest text-primary animate-pulse">
+                  <Sparkles className="w-4 h-4 text-foreground" />
+                  Free Shipping Unlocked!
+                  <Sparkles className="w-4 h-4 text-foreground" />
                 </div>
               )}
             </div>
 
             {/* Cart Items */}
-            <ScrollArea className="flex-1 px-6">
-              <div className="flex flex-col gap-4 py-4">
+            <ScrollArea className="flex-1 px-6 bg-muted/20">
+              <div className="flex flex-col gap-6 py-6">
                 {cartItems.map((item) => (
-                  <div key={item.lineId} className="group relative flex gap-4 p-3 rounded-lg bg-card border border-border/50 hover:border-primary/30 transition-colors">
+                  <div key={item.lineId} className="group relative flex gap-4 p-4 bg-card border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all duration-200">
                     {/* Product Image */}
-                    <div className="relative h-20 w-20 overflow-hidden rounded-md bg-muted flex-shrink-0">
+                    <div className="relative h-24 w-24 border-2 border-foreground flex-shrink-0 bg-white">
                       <Image
                         src={item.product.image}
                         alt={item.product.name}
                         fill
                         className="object-cover"
                         unoptimized
-                        sizes="80px"
+                        sizes="96px"
                       />
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm truncate pr-6">{item.product.name}</h3>
-                      {item.variantTitle && (
-                        <p className="text-xs text-primary font-medium mt-0.5">Size: {item.variantTitle}</p>
-                      )}
-                      <p className="text-xs text-foreground/50 mt-0.5">{item.product.category}</p>
-                      <p className="text-primary font-bold mt-1">₹{item.product.price.toFixed(2)}</p>
+                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-bold font-headline text-lg uppercase leading-none truncate pr-6">{item.product.name}</h3>
+                        {item.variantTitle && (
+                          <div className="inline-block px-2 py-0.5 mt-2 text-xs font-bold border border-foreground bg-accent/20">
+                            SIZE: {item.variantTitle}
+                          </div>
+                        )}
+                      </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex items-center gap-2 mt-2">
-                        <button
-                          onClick={() => updateQuantity(item.lineId, Math.max(1, item.quantity - 1))}
-                          className="w-7 h-7 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                        >
-                          <Minus className="w-3 h-3" />
-                        </button>
-                        <span className="w-8 text-center font-semibold text-sm">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.lineId, item.quantity + 1)}
-                          className="w-7 h-7 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </button>
+                      <div className="flex items-end justify-between mt-3">
+                        <p className="text-xl font-black font-headline">₹{item.product.price.toFixed(2)}</p>
+
+                        {/* Quantity Controls */}
+                        <div className="flex items-center border-2 border-foreground bg-background">
+                          <button
+                            onClick={() => updateQuantity(item.lineId, Math.max(1, item.quantity - 1))}
+                            className="w-8 h-8 flex items-center justify-center hover:bg-muted border-r-2 border-foreground transition-colors"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="w-10 text-center font-bold text-sm">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.lineId, item.quantity + 1)}
+                            className="w-8 h-8 flex items-center justify-center hover:bg-muted border-l-2 border-foreground transition-colors"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     {/* Remove Button */}
                     <button
                       onClick={() => removeFromCart(item.lineId)}
-                      className="absolute top-2 right-2 w-6 h-6 rounded-full bg-destructive/10 text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground transition-all"
+                      className="absolute -top-3 -right-3 w-8 h-8 bg-destructive border-2 border-foreground text-destructive-foreground flex items-center justify-center hover:rotate-90 transition-transform shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
@@ -118,61 +127,53 @@ export default function Cart() {
             </ScrollArea>
 
             {/* Footer */}
-            <div className="border-t border-border/50 px-6 py-4 space-y-4 bg-card/50">
-              {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-2 pb-3 border-b border-border/30">
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <Truck className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] text-foreground/60">Fast Shipping</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <Shield className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] text-foreground/60">Secure Pay</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <RotateCcw className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] text-foreground/60">30-Day Returns</span>
-                </div>
-              </div>
+            <div className="border-t-4 border-foreground p-6 bg-background space-y-4">
 
               {/* Subtotal */}
-              <div className="flex items-center justify-between">
-                <span className="text-foreground/60">Subtotal</span>
-                <span className="text-xl font-bold">₹{safeTotal.toFixed(2)}</span>
+              <div className="flex items-end justify-between border-b-2 border-dashed border-foreground pb-4">
+                <span className="font-bold font-headline text-lg uppercase text-muted-foreground">Subtotal</span>
+                <span className="text-3xl font-black font-headline">₹{safeTotal.toFixed(2)}</span>
               </div>
-              <p className="text-xs text-foreground/50 text-center">Shipping calculated at checkout</p>
 
-              {/* Checkout Button */}
-              <Button
-                size="lg"
-                className="w-full h-12 font-bold text-base gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
-                onClick={() => checkoutUrl && (window.location.href = checkoutUrl)}
-                disabled={!checkoutUrl || loading}
-              >
-                <Sparkles className="w-4 h-4" />
-                {loading ? 'Loading...' : 'Checkout Now'}
-              </Button>
+              <div className="space-y-3 pt-2">
+                {/* Checkout Button */}
+                <Button
+                  size="lg"
+                  className="w-full h-14 text-lg font-black uppercase tracking-widest border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all bg-primary text-foreground hover:bg-primary/90"
+                  onClick={() => checkoutUrl && (window.location.href = checkoutUrl)}
+                  disabled={!checkoutUrl || loading}
+                >
+                  {loading ? 'LOADING...' : 'SECURE CHECKOUT'} <ArrowRight className="ml-2 w-6 h-6" />
+                </Button>
 
-              {/* Continue Shopping */}
-              <Button variant="ghost" size="sm" onClick={closeCart} className="w-full text-foreground/60 hover:text-foreground">
-                Continue Shopping
-              </Button>
+                {/* Continue Shopping */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={closeCart}
+                  className="w-full border-2 border-transparent hover:bg-transparent hover:underline uppercase font-bold tracking-wide"
+                >
+                  Continue Shopping
+                </Button>
+              </div>
             </div>
           </>
         ) : (
           /* Empty Cart State */
-          <div className="flex h-full flex-col items-center justify-center space-y-6 px-6">
+          <div className="flex h-full flex-col items-center justify-center space-y-8 px-8 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-background to-background">
             <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
-              <ShoppingBag className="relative h-24 w-24 text-foreground/20" strokeWidth={1} />
+              <div className="absolute inset-0 bg-accent blur-[50px] opacity-40 animate-pulse" />
+              <ShoppingBag className="relative h-32 w-32 border-4 border-foreground p-6 rounded-full bg-background rotate-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" strokeWidth={1.5} />
             </div>
             <div className="text-center space-y-2">
-              <p className="text-xl font-semibold font-headline">Nothing here yet...</p>
-              <p className="text-sm text-foreground/50">Your future fits are waiting 👀</p>
+              <p className="text-3xl font-black font-headline uppercase italic">Your Cart is Empty!</p>
+              <p className="text-lg font-medium text-muted-foreground">Honestly? That's kinda sad.</p>
             </div>
-            <Button onClick={closeCart} className="gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              Start Shopping
+            <Button
+              onClick={closeCart}
+              className="gap-2 h-12 px-8 text-lg font-bold border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all bg-foreground text-background hover:bg-foreground/90"
+            >
+              start hauling <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
         )}

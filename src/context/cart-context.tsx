@@ -198,8 +198,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('shopify_cart_id');
   };
 
-  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const cartTotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const cartItemCount = cartItems.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
+  const cartTotal = cartItems.reduce((total, item) => total + ((Number(item.product.price) || 0) * (Number(item.quantity) || 0)), 0);
 
   const toggleCart = () => {
     setIsCartOpen(prev => !prev);
