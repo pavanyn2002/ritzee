@@ -82,7 +82,11 @@ export default async function BlogSection() {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {posts.map((post, index) => (
-                        <ScrollAnimation key={post.id} delay={index * 100}>
+                        <ScrollAnimation
+                            key={post.id}
+                            delay={index * 100}
+                            className={index > 0 ? "hidden md:block" : "block"}
+                        >
                             <Link href={`/blog/${post.slug}`} className="group block h-full">
                                 <article className="bg-card border-2 border-foreground h-full flex flex-col shadow-[6px_6px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000] transition-all duration-300">
                                     <div className="aspect-[4/3] relative overflow-hidden border-b-2 border-foreground">
