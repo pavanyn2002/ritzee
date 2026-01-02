@@ -12,7 +12,7 @@ const faqs = [
     },
     {
         question: 'How long does shipping take?',
-        answer: 'Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business days delivery. Free shipping on orders over $999.'
+        answer: 'Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business days delivery. Free shipping on orders over ₹1000.'
     },
     {
         question: 'What sizes do you offer?',

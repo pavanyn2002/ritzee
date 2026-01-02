@@ -13,7 +13,8 @@ const FREE_SHIPPING_THRESHOLD = 999;
 export default function Cart() {
   const { isCartOpen, closeCart, cartItems, cartTotal, removeFromCart, updateQuantity, checkoutUrl, loading } = useCart();
 
-  const shippingProgress = Math.min((cartTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+  const safeTotal = isNaN(cartTotal) ? 0 : cartTotal;
+  const shippingProgress = Math.min((safeTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -36,11 +37,11 @@ export default function Cart() {
           <>
             {/* Free Shipping Progress */}
             <div className="px-6 py-3 bg-muted/50">
-              {cartTotal < FREE_SHIPPING_THRESHOLD ? (
+              {safeTotal < FREE_SHIPPING_THRESHOLD ? (
                 <div className="space-y-2">
                   <p className="text-sm text-center">
                     <span className="text-foreground/60">Add </span>
-                    <span className="font-bold text-primary">${(FREE_SHIPPING_THRESHOLD - cartTotal).toFixed(2)}</span>
+                    <span className="font-bold text-primary">₹{(FREE_SHIPPING_THRESHOLD - safeTotal).toFixed(2)}</span>
                     <span className="text-foreground/60"> more for </span>
                     <span className="font-semibold">FREE shipping! 🚚</span>
                   </p>
@@ -72,6 +73,7 @@ export default function Cart() {
                         alt={item.product.name}
                         fill
                         className="object-cover"
+                        unoptimized
                         sizes="80px"
                       />
                     </div>
@@ -79,8 +81,11 @@ export default function Cart() {
                     {/* Product Details */}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-sm truncate pr-6">{item.product.name}</h3>
+                      {item.variantTitle && (
+                        <p className="text-xs text-primary font-medium mt-0.5">Size: {item.variantTitle}</p>
+                      )}
                       <p className="text-xs text-foreground/50 mt-0.5">{item.product.category}</p>
-                      <p className="text-primary font-bold mt-1">${item.product.price.toFixed(2)}</p>
+                      <p className="text-primary font-bold mt-1">₹{item.product.price.toFixed(2)}</p>
 
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-2 mt-2">
@@ -133,7 +138,7 @@ export default function Cart() {
               {/* Subtotal */}
               <div className="flex items-center justify-between">
                 <span className="text-foreground/60">Subtotal</span>
-                <span className="text-xl font-bold">${cartTotal.toFixed(2)}</span>
+                <span className="text-xl font-bold">₹{safeTotal.toFixed(2)}</span>
               </div>
               <p className="text-xs text-foreground/50 text-center">Shipping calculated at checkout</p>
 

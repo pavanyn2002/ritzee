@@ -23,6 +23,8 @@ export default async function Home() {
   // Only show if "bestsellers" collection exists in Shopify
   const bestsellers = (await getCollectionProducts({ collection: 'bestsellers' })).slice(0, 4);
 
+
+
   // Fetch Site Config from Supabase
   let heroConfig = {
     headline: "ELEVATE YOUR EVERYDAY",
@@ -74,14 +76,14 @@ export default async function Home() {
       </Marquee>
 
       {/* Bestsellers Section */}
-      <section className="py-12 bg-muted/5">
+      <section className="py-8 md:py-12 lg:py-16 bg-muted/5">
         <div className="w-full px-4 md:px-8">
           <ScrollAnimation>
             <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-headline font-black tracking-tight mb-8 text-center uppercase"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-black tracking-tight mb-6 md:mb-8 lg:mb-10 text-center uppercase"
               style={{
                 color: '#BFFF00',
-                textShadow: '3px 3px 0px #8B00FF, 6px 6px 0px rgba(139, 0, 255, 0.5)'
+                textShadow: '2px 2px 0px #8B00FF, 4px 4px 0px rgba(139, 0, 255, 0.3)'
               }}
             >
               BESTSELLERS
@@ -90,7 +92,7 @@ export default async function Home() {
 
           {bestsellers.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 {bestsellers.map((product, index) => (
                   <ScrollAnimation key={product.id} delay={index * 100}>
                     <ProductCard product={mapProduct(product)} />
@@ -114,14 +116,14 @@ export default async function Home() {
 
       {/* Latest Drops Section - Only show if products exist */}
       {latestDrops.length > 0 && (
-        <section className="py-12 md:py-20" id="latest-drops">
+        <section className="py-8 md:py-12 lg:py-20" id="latest-drops">
           <div className="w-full px-4 md:px-8">
             <ScrollAnimation>
               <h2
-                className="text-2xl md:text-3xl lg:text-4xl font-headline font-black tracking-tight mb-8 text-center uppercase"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-black tracking-tight mb-6 md:mb-8 lg:mb-10 text-center uppercase"
                 style={{
                   color: '#BFFF00',
-                  textShadow: '3px 3px 0px #8B00FF, 6px 6px 0px rgba(139, 0, 255, 0.5)'
+                  textShadow: '2px 2px 0px #8B00FF, 4px 4px 0px rgba(139, 0, 255, 0.3)'
                 }}
               >
                 Latest Drops
@@ -136,6 +138,8 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+
 
       <BlogSection />
 

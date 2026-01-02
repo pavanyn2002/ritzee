@@ -20,9 +20,9 @@ const FooterLink = ({ href, children }: { href: string; children: React.ReactNod
 export default function Footer() {
   return (
     <footer className="bg-background border-t border-border/40">
-      <div className="w-full px-4 md:px-8 py-2 md:py-4">
+      <div className="w-full px-4 md:px-8 py-8 md:py-12 lg:py-16">
         {/* Main Footer Content - All in one row on desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
           {/* Logo Section */}
           <div className="flex flex-col gap-4 col-span-2 md:col-span-1">
             <Logo className="h-12 md:h-14" />

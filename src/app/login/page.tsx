@@ -1,81 +1,71 @@
 
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lock, Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { Logo } from '@/components/ui/logo'
 
 export default function LoginPage() {
-    const router = useRouter();
-    const { toast } = useToast();
-    const [loading, setLoading] = useState(false);
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const router = useRouter()
+    const supabase = createClient()
 
-    const handleAuth = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
 
-        if (isSignUp) {
-            // Sign Up
-            const { error } = await supabase.auth.signUp({
-                email,
-                password,
-            });
-            if (error) {
-                toast({ title: 'Sign Up Failed', description: error.message, variant: 'destructive' });
-            } else {
-                toast({ title: 'Welcome!', description: 'Please check your email to confirm account.' });
-            }
-        } else {
-            // Log In
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
+
+        try {
             const { error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
-            });
+            })
 
             if (error) {
-                toast({ title: 'Login Failed', description: error.message, variant: 'destructive' });
+                setError(error.message)
             } else {
-                toast({ title: 'Success', description: 'Logged in successfully.' });
-                router.push('/admin');
-                router.refresh();
+                router.push('/admin')
+                router.refresh()
             }
+        } catch (err) {
+            setError('An unexpected error occurred')
+        } finally {
+            setLoading(false)
         }
-
-        setLoading(false);
-    };
+    }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-muted/20 px-4">
-            <Card className="w-full max-w-md">
-                <CardHeader className="text-center">
-                    <div className="flex justify-center mb-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                            <Lock className="w-6 h-6 text-primary" />
-                        </div>
-                    </div>
-                    <CardTitle className="text-2xl font-black font-headline tracking-tighter uppercase">Ritzee Admin</CardTitle>
-                    <CardDescription>Enter your credentials to access the control panel.</CardDescription>
+        <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 px-4">
+            <div className="mb-8">
+                <Logo />
+            </div>
+            <Card className="w-full max-w-sm">
+                <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-center">Admin Login</CardTitle>
+                    <CardDescription className="text-center">
+                        Enter your credentials to access the dashboard
+                    </CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleAuth} className="space-y-4">
+                <form onSubmit={handleLogin}>
+                    <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="admin@ritzee.com"
+                                placeholder="admin@example.com"
+                                required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
                             />
                         </div>
                         <div className="space-y-2">
@@ -83,28 +73,24 @@ export default function LoginPage() {
                             <Input
                                 id="password"
                                 type="password"
+                                required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                required
                             />
                         </div>
-
-                        <Button type="submit" className="w-full font-bold" disabled={loading}>
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (isSignUp ? 'Create Account' : 'Sign In')}
+                        {error && (
+                            <div className="text-sm font-medium text-destructive text-center">
+                                {error}
+                            </div>
+                        )}
+                    </CardContent>
+                    <CardFooter>
+                        <Button className="w-full" type="submit" disabled={loading}>
+                            {loading ? 'Signing in...' : 'Sign in'}
                         </Button>
-
-                        <div className="text-center">
-                            <button
-                                type="button"
-                                onClick={() => setIsSignUp(!isSignUp)}
-                                className="text-xs text-muted-foreground hover:text-primary transition-colors underline"
-                            >
-                                {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
-                            </button>
-                        </div>
-                    </form>
-                </CardContent>
+                    </CardFooter>
+                </form>
             </Card>
         </div>
-    );
+    )
 }

@@ -1,59 +1,23 @@
 
 import ProductCard from '@/components/product-card';
-import { getProducts } from '@/lib/shopify';
+import { getCollections } from '@/lib/shopify';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ScrollAnimation } from '@/components/scroll-animation';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import ShopCarousel from './shop-carousel';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ShopPage() {
-  // Fetch all products from Shopify
-  const allProducts = await getProducts();
+  // Fetch all collections with their products
+  let collections = await getCollections();
 
-  // Map products to the format expected by ProductCard
-  const products = allProducts.map((p) => ({
-    id: p.id,
-    slug: p.handle,
-    name: p.title,
-    description: p.description,
-    price: parseFloat(p.priceRange.minVariantPrice.amount),
-    originalPrice: p.compareAtPriceRange?.minVariantPrice?.amount
-      ? parseFloat(p.compareAtPriceRange.minVariantPrice.amount)
-      : undefined,
-    image: p.featuredImage?.url || '/placeholder.png',
-    imageHint: 'product',
-    modelUrl: p.media?.edges?.find((edge: any) => edge.node.__typename === 'Model3d')?.node?.sources?.[0]?.url || '',
-    category: p.productType || 'All Products',
-  }));
+  // Filter out empty collections if desired
+  const displayCollections = collections.filter(c => c.products.length > 0);
 
-  // Group products by category
-  const categoriesMap = new Map<string, typeof products>();
-  products.forEach((product) => {
-    const category = product.category;
-    if (!categoriesMap.has(category)) {
-      categoriesMap.set(category, []);
-    }
-    categoriesMap.get(category)!.push(product);
-  });
-
-  // Convert to array of categories with products
-  const displayCategories = Array.from(categoriesMap.entries()).map(([name, products]) => ({
-    name,
-    slug: name.toLowerCase().replace(/\s+/g, '-'),
-    products,
-  }));
-
-  // If no products, show empty state
-  if (products.length === 0) {
+  // If no collections, show standard empty state
+  if (displayCollections.length === 0) {
     return (
       <section className="py-20">
         <div className="container px-4 md:px-6">
@@ -70,9 +34,9 @@ export default async function ShopPage() {
             </ScrollAnimation>
           </div>
           <div className="text-center py-20">
-            <p className="text-xl text-muted-foreground mb-4">No products yet</p>
+            <p className="text-xl text-muted-foreground mb-4">No collections found</p>
             <p className="text-sm text-muted-foreground">
-              Add products to your Shopify store to display them here.
+              Create collections in Shopify to organize your products here.
             </p>
           </div>
         </div>
@@ -97,52 +61,51 @@ export default async function ShopPage() {
         </div>
 
         <div className="space-y-24">
-          {displayCategories.map((category, index) => {
-            const categoryProducts = category.products;
+          {displayCollections.map((collection, index) => {
+            // Map Shopify Product to Frontend Product
+            const categoryProducts = collection.products.map((p: any) => ({
+              id: p.id,
+              slug: p.handle,
+              name: p.title,
+              description: p.description,
+              price: parseFloat(p.priceRange.minVariantPrice.amount),
+              originalPrice: p.compareAtPriceRange?.maxVariantPrice?.amount
+                ? parseFloat(p.compareAtPriceRange.maxVariantPrice.amount)
+                : undefined,
+              image: p.featuredImage?.url || p.images?.edges?.[0]?.node?.url || '/placeholder.png',
+              imageHint: 'product',
+              modelUrl: p.media?.edges?.find((edge: any) => edge.node.__typename === 'Model3d')?.node?.sources?.[0]?.url || '',
+              category: collection.title || 'Collection',
+            }));
 
-            if (categoryProducts.length === 0) return null;
-
-            // Layout Logic (keeping the aesthetic variation)
-            const isMiddleRow = index % 3 === 1;
+            // Layout Logic
+            const isAlternate = index % 2 === 1;
 
             return (
-              <div key={category.slug || index} id={category.slug} className="space-y-8">
+              <div key={collection.id} id={collection.handle} className="space-y-8">
                 <ScrollAnimation>
                   <div className="flex items-center justify-between border-b pb-4">
-                    <h2 className="text-2xl font-bold font-headline tracking-tight uppercase text-primary">
-                      {category.name}
-                    </h2>
-                    <span className="text-sm text-muted-foreground">
-                      {categoryProducts.length} items
-                    </span>
+                    <Link href={`/collections/${collection.handle}`} className="group flex items-center gap-2">
+                      <h2 className="text-2xl font-bold font-headline tracking-tight uppercase text-primary group-hover:underline">
+                        {collection.title}
+                      </h2>
+                      <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    </Link>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm text-muted-foreground hidden sm:inline-block">
+                        {categoryProducts.length} items
+                      </span>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={`/collections/${collection.handle}`}>
+                          View All
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
                 </ScrollAnimation>
 
                 <ScrollAnimation delay={200}>
-                  <Carousel
-                    opts={{
-                      align: "start",
-                      loop: true,
-                    }}
-                    className="w-full"
-                  >
-                    <CarouselContent className="-ml-3">
-                      {categoryProducts.map((product: any) => (
-                        <CarouselItem
-                          key={product.id}
-                          className={`pl-3 ${isMiddleRow ? 'sm:basis-1/3 md:basis-1/4 lg:basis-1/5' : 'sm:basis-1/2 md:basis-[30%] lg:basis-[22%]'}`}
-                        >
-                          <div className="p-1 h-full">
-                            <ProductCard product={product} />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <div className="flex justify-end gap-2 mt-4">
-                      <CarouselPrevious className="static translate-y-0" />
-                      <CarouselNext className="static translate-y-0" />
-                    </div>
-                  </Carousel>
+                  <ShopCarousel products={categoryProducts} isAlternate={isAlternate} />
                 </ScrollAnimation>
               </div>
             );

@@ -119,6 +119,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
                                                 alt={product.name}
                                                 fill
                                                 className="object-cover"
+                                                unoptimized
                                                 sizes="64px"
                                             />
                                         </div>

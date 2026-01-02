@@ -8,6 +8,7 @@ export type CartItem = {
   quantity: number;
   lineId: string;
   variantId: string;
+  variantTitle: string;
 };
 
 type CartContextType = {
@@ -52,6 +53,7 @@ function mapCartLines(lines: any[]): CartItem[] {
       quantity: node.quantity,
       lineId: node.id,
       variantId: merchandise.id,
+      variantTitle: merchandise.title === 'Default Title' ? '' : merchandise.title,
     };
   });
 }

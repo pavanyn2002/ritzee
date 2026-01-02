@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { getCollectionProductsQuery, getProductsQuery } from './queries';
+import { getCollectionProductsQuery, getProductsQuery, getProductQuery, getCollectionsQuery } from './queries';
 import { Connection, Product } from './types';
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
@@ -79,6 +79,7 @@ export async function getProducts({
             reverse,
             query,
         },
+        revalidate: 60 // Revalidate every 60 seconds
     });
 
     if (!res.body.data.products) return [];
@@ -101,12 +102,37 @@ export async function getCollectionProducts({
             handle: collection,
             sortKey,
             reverse
-        }
+        },
+        revalidate: 60 // Revalidate every 60 seconds
     });
 
     if (!res.body.data.collection?.products) return [];
 
     return removeEdgesAndNodes(res.body.data.collection.products);
+}
+
+export async function getProduct(handle: string): Promise<Product | undefined> {
+    const res = await shopifyFetch<{ data: { product: Product } }>({
+        query: getProductQuery,
+        variables: { handle },
+        revalidate: 60
+    });
+
+    return res.body.data.product;
+}
+
+export async function getCollections(): Promise<any[]> {
+    const res = await shopifyFetch<{ data: { collections: Connection<any> } }>({
+        query: getCollectionsQuery,
+        revalidate: 60
+    });
+
+    if (!res.body.data.collections) return [];
+
+    return removeEdgesAndNodes(res.body.data.collections).map((collection: any) => ({
+        ...collection,
+        products: removeEdgesAndNodes(collection.products)
+    }));
 }
 
 // Cart API Functions

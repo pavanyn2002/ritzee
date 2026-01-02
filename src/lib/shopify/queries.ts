@@ -20,6 +20,16 @@ const productFragment = `
       currencyCode
     }
   }
+  compareAtPriceRange {
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+  }
   variants(first: 250) {
     edges {
       node {
@@ -31,6 +41,10 @@ const productFragment = `
           value
         }
         price {
+          amount
+          currencyCode
+        }
+        compareAtPrice {
           amount
           currencyCode
         }
@@ -90,6 +104,36 @@ export const getCollectionProductsQuery = /* GraphQL */ `
         edges {
           node {
             ${productFragment}
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getProductQuery = /* GraphQL */ `
+  query getProduct($handle: String!) {
+    product(handle: $handle) {
+      ${productFragment}
+    }
+  }
+`;
+// Fetch Collections with their products for the Shop page
+export const getCollectionsQuery = /* GraphQL */ `
+  query getCollections {
+    collections(first: 100, sortKey: TITLE) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          products(first: 20) {
+            edges {
+              node {
+                ${productFragment}
+              }
+            }
           }
         }
       }

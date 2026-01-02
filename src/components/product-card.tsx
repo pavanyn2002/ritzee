@@ -9,7 +9,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+  const hasDiscount = (product.originalPrice ?? 0) > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100)
     : 0;
@@ -25,6 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             height={600}
             className="object-cover w-full h-full aspect-square group-hover:scale-105 transition-transform duration-300"
             data-ai-hint={product.imageHint}
+            unoptimized
           />
           {hasDiscount && (
             <div className="absolute top-3 left-3 flex gap-2">

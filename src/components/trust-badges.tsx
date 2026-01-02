@@ -1,7 +1,7 @@
 import { Truck, ShieldCheck, RotateCcw, Package } from 'lucide-react';
 
 const badges = [
-    { icon: Truck, label: 'Free Shipping', sublabel: 'On orders over $999' },
+    { icon: Truck, label: 'Free Shipping', sublabel: 'On orders over ₹1000' },
     { icon: ShieldCheck, label: 'Secure Checkout', sublabel: '100% Protected' },
     { icon: RotateCcw, label: 'Easy Returns', sublabel: '30-Day Policy' },
     { icon: Package, label: 'Quality Assured', sublabel: 'Premium Materials' },

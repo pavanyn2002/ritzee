@@ -1,26 +1,22 @@
-import { NextResponse } from 'next/server';
-import { getProducts } from '@/lib/shopify';
 
-export const dynamic = 'force-dynamic';
+import { NextResponse } from 'next/server';
+import { getCollections } from '@/lib/shopify';
+
+export const revalidate = 60; // Cache for 60 seconds
 
 export async function GET() {
     try {
-        // Fetch all products from Shopify
-        const products = await getProducts({});
+        const collections = await getCollections();
 
-        // Extract unique product types (categories)
-        const categorySet = new Set<string>();
-        products.forEach((product) => {
-            if (product.productType) {
-                categorySet.add(product.productType);
-            }
-        });
+        // Extract titles and filter out empty ones if needed
+        // Assuming getCollections returns { title, ... }
+        const categories = collections.map((c: any) => c.title);
 
-        const categories = Array.from(categorySet).sort();
+        const uniqueCategories = Array.from(new Set(categories));
 
-        return NextResponse.json({ categories });
+        return NextResponse.json({ categories: uniqueCategories });
     } catch (error) {
         console.error('Error fetching categories:', error);
-        return NextResponse.json({ categories: [] }, { status: 500 });
+        return NextResponse.json({ categories: [], error: 'Failed to fetch categories' }, { status: 500 });
     }
 }
