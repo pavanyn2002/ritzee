@@ -8,14 +8,15 @@ export async function GET() {
     try {
         const collections = await getCollections();
 
-        // Extract titles and filter out empty ones and 'Bestsellers' (has its own menu)
+        // Extract title and handle, filter out 'bestsellers' (has its own menu)
         const categories = collections
-            .filter((c: any) => c.handle !== 'bestsellers')
-            .map((c: any) => c.title);
+            .filter((c: any) => c.handle !== 'bestsellers' && c.products?.length > 0)
+            .map((c: any) => ({
+                title: c.title,
+                handle: c.handle
+            }));
 
-        const uniqueCategories = Array.from(new Set(categories));
-
-        return NextResponse.json({ categories: uniqueCategories });
+        return NextResponse.json({ categories });
     } catch (error) {
         console.error('Error fetching categories:', error);
         return NextResponse.json({ categories: [], error: 'Failed to fetch categories' }, { status: 500 });

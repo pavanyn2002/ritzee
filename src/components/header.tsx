@@ -31,7 +31,7 @@ const linkStyles = "text-base font-medium text-foreground/80 hover:text-primary 
 
 
 const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => {
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ title: string, handle: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -70,12 +70,12 @@ const NavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?
                 ) : (
                   categories.map((category) => (
                     <ListItem
-                      key={category}
-                      href={`/shop?category=${encodeURIComponent(category)}`}
-                      title={category}
+                      key={category.handle}
+                      href={`/collections/${category.handle}`}
+                      title={category.title}
                       onClick={onLinkClick}
                     >
-                      Browse our collection of {category.toLowerCase()}.
+                      Browse our collection of {category.title.toLowerCase()}.
                     </ListItem>
                   ))
                 )}
@@ -124,7 +124,7 @@ ListItem.displayName = "ListItem"
 const mobileLinkStyles = "text-lg font-medium text-foreground/80 hover:text-primary transition-colors relative group py-3 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-[hsl(var(--accent))] hover:after:w-full after:transition-all after:duration-300";
 
 const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => {
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ title: string, handle: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -163,13 +163,13 @@ const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLink
                 <li className="text-sm text-muted-foreground py-2">Loading...</li>
               ) : (
                 categories.map((category) => (
-                  <li key={category}>
+                  <li key={category.handle}>
                     <Link
-                      href={`/shop?category=${encodeURIComponent(category)}`}
+                      href={`/collections/${category.handle}`}
                       onClick={onLinkClick}
                       className="block py-2 text-foreground/70 hover:text-primary transition-colors"
                     >
-                      {category}
+                      {category.title}
                     </Link>
                   </li>
                 ))
@@ -186,6 +186,7 @@ const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLink
     </nav>
   );
 };
+
 
 export default function Header() {
   const { toggleCart, cartItemCount } = useCart();
