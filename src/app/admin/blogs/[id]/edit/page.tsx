@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,10 +15,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { notFound } from 'next/navigation';
 
 type PageProps = {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 };
 
 export default function EditBlogPage({ params }: PageProps) {
+    const { id } = use(params);
     const router = useRouter();
     const { toast } = useToast();
     const [loading, setLoading] = useState(true);
@@ -37,14 +38,14 @@ export default function EditBlogPage({ params }: PageProps) {
 
     useEffect(() => {
         fetchBlog();
-    }, [params.id]);
+    }, [id]);
 
     async function fetchBlog() {
         try {
             const { data, error } = await supabase
                 .from('blogs')
                 .select('*')
-                .eq('id', params.id)
+                .eq('id', id)
                 .single();
 
             if (error) throw error;
@@ -97,7 +98,7 @@ export default function EditBlogPage({ params }: PageProps) {
                     published: formData.published,
                     updated_at: new Date().toISOString(),
                 })
-                .eq('id', params.id);
+                .eq('id', id);
 
             if (error) throw error;
 
@@ -128,7 +129,7 @@ export default function EditBlogPage({ params }: PageProps) {
             const { error } = await supabase
                 .from('blogs')
                 .delete()
-                .eq('id', params.id);
+                .eq('id', id);
 
             if (error) throw error;
 

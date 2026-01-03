@@ -8,9 +8,10 @@ export async function GET() {
     try {
         const collections = await getCollections();
 
-        // Extract titles and filter out empty ones if needed
-        // Assuming getCollections returns { title, ... }
-        const categories = collections.map((c: any) => c.title);
+        // Extract titles and filter out empty ones and 'Bestsellers' (has its own menu)
+        const categories = collections
+            .filter((c: any) => c.handle !== 'bestsellers')
+            .map((c: any) => c.title);
 
         const uniqueCategories = Array.from(new Set(categories));
 

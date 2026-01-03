@@ -39,6 +39,7 @@ export type Product = {
     variants: Connection<ProductVariant>;
     tags: string[];
     updatedAt: string;
+    productType?: string;
     media?: Connection<Model3d>;
 };
 

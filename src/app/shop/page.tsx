@@ -13,10 +13,12 @@ export default async function ShopPage() {
   // Fetch all collections with their products
   let collections = await getCollections();
 
-  // Filter out empty collections if desired
-  const displayCollections = collections.filter(c => c.products.length > 0);
+  // Filter out empty collections and exclude 'bestsellers' (has its own page)
+  const displayCollections = collections.filter(c =>
+    c.products.length > 0 && c.handle !== 'bestsellers'
+  );
 
-  // If no collections, show standard empty state
+  // If no collections, show message
   if (displayCollections.length === 0) {
     return (
       <section className="py-20">
@@ -33,11 +35,12 @@ export default async function ShopPage() {
               </p>
             </ScrollAnimation>
           </div>
+
           <div className="text-center py-20">
-            <p className="text-xl text-muted-foreground mb-4">No collections found</p>
-            <p className="text-sm text-muted-foreground">
-              Create collections in Shopify to organize your products here.
-            </p>
+            <p className="text-xl text-muted-foreground mb-6">No products available yet. Check back soon!</p>
+            <Button asChild size="lg" variant="outline" className="font-bold h-12 rounded-none border-2">
+              <Link href="/">Back to Home <ArrowRight className="ml-2 w-4 h-4" /></Link>
+            </Button>
           </div>
         </div>
       </section>

@@ -6,50 +6,29 @@ import { ScrollAnimation } from './scroll-animation';
 import { ArrowRight, Calendar } from 'lucide-react';
 
 export default async function BlogSection() {
-    const { data: blogPosts } = await supabase
-        .from('blog_posts')
+    // Fetch actual blog posts from Supabase 'blogs' table
+    const { data: blogPosts, error } = await supabase
+        .from('blogs')
         .select('*')
-        .eq('is_published', true)
+        .eq('published', true)
         .order('created_at', { ascending: false })
         .limit(3);
 
-    // Mock data for immediate display if DB is empty
-    const mockPosts = [
-        {
-            id: 'mock-1',
-            title: 'The Future of Digital Fashion',
-            excerpt: 'How the metaverse is reshaping the way we dress and express ourselves.',
-            image: 'https://images.unsplash.com/photo-1542272201-b1ca555f4634?autofmt&fit=crop&w=600&h=400',
-            date: 'Jan 2, 2026',
-            slug: 'future-digital-fashion'
-        },
-        {
-            id: 'mock-2',
-            title: 'Sustainable Streetwear',
-            excerpt: 'Why eco-friendly materials are the next big trend in urban fashion.',
-            image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?autofmt&fit=crop&w=600&h=400',
-            date: 'Dec 28, 2025',
-            slug: 'sustainable-streetwear'
-        },
-        {
-            id: 'mock-3',
-            title: 'Ritzee Season: Void Collection',
-            excerpt: 'A deep dive into the design philosophy behind our latest dark-matter inspired drops.',
-            image: 'https://images.unsplash.com/photo-1537832816519-689ad163238b?autofmt&fit=crop&w=600&h=400',
-            date: 'Dec 15, 2025',
-            slug: 'void-collection-design'
-        }
-    ];
+    if (error) {
+        console.error('Error fetching blogs:', error);
+    }
 
+    // Map to display format (no mock data fallback)
     const posts = (blogPosts && blogPosts.length > 0) ? blogPosts.map(p => ({
         id: p.id,
         title: p.title,
         excerpt: p.excerpt || 'Read this latest article on the Ritzee blog.',
-        image: 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=600&h=400&fit=crop',
-        date: new Date(p.created_at).toLocaleDateString(),
+        image: p.image || 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=600&h=400&fit=crop',
+        date: p.date || new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         slug: p.slug
-    })) : mockPosts;
+    })) : [];
 
+    // Don't render section if no blogs exist
     if (posts.length === 0) return null;
 
     return (

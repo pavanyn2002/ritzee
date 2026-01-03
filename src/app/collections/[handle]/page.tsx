@@ -4,7 +4,7 @@ import ProductCard from '@/components/product-card';
 import { ScrollAnimation } from '@/components/scroll-animation';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface CollectionPageProps {
     params: {
@@ -16,7 +16,8 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     const { handle } = params;
 
     const products = await getCollectionProducts({
-        collection: handle
+        collection: handle,
+        limit: 50
     });
 
     if (!products || products.length === 0) {

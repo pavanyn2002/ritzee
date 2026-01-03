@@ -1,0 +1,117 @@
+// Demo products for testing UI effects
+export const demoProducts = [
+    {
+        id: 'demo-1',
+        name: 'Neon Vibe Oversized Tee',
+        slug: 'neon-vibe-oversized-tee',
+        price: 1499,
+        description: 'Premium cotton oversized tee with neon accents. Perfect for the streetwear aesthetic.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600'],
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600',
+        originalPrice: 1999,
+        imageHint: 'oversized t-shirt',
+        modelUrl: '',
+        category: 'T-Shirts'
+    },
+    {
+        id: 'demo-2',
+        name: 'Cyber Punk Hoodie',
+        slug: 'cyber-punk-hoodie',
+        price: 2499,
+        description: 'Heavyweight hoodie with cyberpunk-inspired graphics. Tech-wear meets street style.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600'],
+        image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600',
+        originalPrice: undefined,
+        imageHint: 'hoodie streetwear',
+        modelUrl: '',
+        category: 'Hoodies'
+    },
+    {
+        id: 'demo-3',
+        name: 'Glitch Art Cargo Pants',
+        slug: 'glitch-art-cargo-pants',
+        price: 2999,
+        description: 'Relaxed fit cargo pants with utility pockets. Urban explorer essentials.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600'],
+        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600',
+        originalPrice: 3499,
+        imageHint: 'cargo pants',
+        modelUrl: '',
+        category: 'Pants'
+    },
+    {
+        id: 'demo-4',
+        name: 'Matrix Black Jacket',
+        slug: 'matrix-black-jacket',
+        price: 4999,
+        description: 'Sleek black jacket with minimal design. Future-forward fashion statement.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600'],
+        image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600',
+        originalPrice: undefined,
+        imageHint: 'black jacket',
+        modelUrl: '',
+        category: 'Jackets'
+    },
+    {
+        id: 'demo-5',
+        name: 'Digital Wave Shorts',
+        slug: 'digital-wave-shorts',
+        price: 1299,
+        description: 'Comfortable mesh shorts with digital wave pattern. Athleisure perfected.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600'],
+        image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600',
+        originalPrice: 1599,
+        imageHint: 'shorts',
+        modelUrl: '',
+        category: 'Shorts'
+    },
+    {
+        id: 'demo-6',
+        name: 'Retro Grid Polo',
+        slug: 'retro-grid-polo',
+        price: 1799,
+        description: 'Classic polo with retro grid pattern. Vintage meets modern.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1625910513413-5fc42fc16e26?w=600'],
+        image: 'https://images.unsplash.com/photo-1625910513413-5fc42fc16e26?w=600',
+        originalPrice: undefined,
+        imageHint: 'polo shirt',
+        modelUrl: '',
+        category: 'Polos'
+    },
+    {
+        id: 'demo-7',
+        name: 'Holographic Cap',
+        slug: 'holographic-cap',
+        price: 899,
+        description: 'Adjustable cap with holographic finish. Stand out from the crowd.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600'],
+        image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600',
+        originalPrice: 1099,
+        imageHint: 'cap hat',
+        modelUrl: '',
+        category: 'Accessories'
+    },
+    {
+        id: 'demo-8',
+        name: 'Vapor Wave Sneakers',
+        slug: 'vapor-wave-sneakers',
+        price: 5999,
+        description: 'Limited edition sneakers with vapor wave aesthetics. Collector\'s item.',
+        discount_price: null,
+        images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600'],
+        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600',
+        originalPrice: 7999,
+        imageHint: 'sneakers shoes',
+        modelUrl: '',
+        category: 'Footwear'
+    }
+];
+
+export type DemoProduct = typeof demoProducts[0];

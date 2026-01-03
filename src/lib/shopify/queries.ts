@@ -83,11 +83,12 @@ const productFragment = `
   }
   tags
   updatedAt
+  productType
 `;
 
 export const getProductsQuery = /* GraphQL */ `
-  query getProducts($sortKey: ProductSortKeys, $reverse: Boolean, $query: String) {
-    products(sortKey: $sortKey, reverse: $reverse, query: $query, first: 100) {
+  query getProducts($sortKey: ProductSortKeys, $reverse: Boolean, $query: String, $first: Int) {
+    products(sortKey: $sortKey, reverse: $reverse, query: $query, first: $first) {
       edges {
         node {
           ${productFragment}
@@ -98,9 +99,9 @@ export const getProductsQuery = /* GraphQL */ `
 `;
 
 export const getCollectionProductsQuery = /* GraphQL */ `
-  query getCollectionProducts($handle: String!, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
+  query getCollectionProducts($handle: String!, $sortKey: ProductCollectionSortKeys, $reverse: Boolean, $first: Int) {
     collection(handle: $handle) {
-      products(sortKey: $sortKey, reverse: $reverse, first: 100) {
+      products(sortKey: $sortKey, reverse: $reverse, first: $first) {
         edges {
           node {
             ${productFragment}

@@ -131,7 +131,7 @@ export default function HeroSection({ headline, images }: HeroSectionProps) {
       <div
         className={cn(
           "z-10 container px-4 md:px-6 relative h-full flex flex-col items-center transition-all duration-1000 ease-out",
-          loading ? "justify-center opacity-0 translate-y-[-50px]" : "justify-end pb-20 opacity-100 translate-y-0"
+          loading ? "justify-center opacity-0 translate-y-[-50px]" : "justify-end pb-32 md:pb-20 opacity-100 translate-y-0"
         )}
       >
         <div className="flex flex-col items-center space-y-6 text-center">

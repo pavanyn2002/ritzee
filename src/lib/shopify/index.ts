@@ -67,10 +67,12 @@ export async function getProducts({
     sortKey,
     reverse,
     query,
+    limit = 100,
 }: {
     sortKey?: 'TITLE' | 'BEST_SELLING' | 'CREATED_AT' | 'PRICE';
     reverse?: boolean;
     query?: string;
+    limit?: number;
 } = {}): Promise<Product[]> {
     const res = await shopifyFetch<{ data: { products: Connection<Product> } }>({
         query: getProductsQuery,
@@ -78,6 +80,7 @@ export async function getProducts({
             sortKey,
             reverse,
             query,
+            first: limit,
         },
         revalidate: 60 // Revalidate every 60 seconds
     });
@@ -90,18 +93,21 @@ export async function getProducts({
 export async function getCollectionProducts({
     collection,
     sortKey,
-    reverse
+    reverse,
+    limit = 100,
 }: {
     collection: string;
     sortKey?: 'TITLE' | 'BEST_SELLING' | 'CREATED_AT' | 'PRICE';
     reverse?: boolean;
+    limit?: number;
 }): Promise<Product[]> {
     const res = await shopifyFetch<{ data: { collection: { products: Connection<Product> } } }>({
         query: getCollectionProductsQuery,
         variables: {
             handle: collection,
             sortKey,
-            reverse
+            reverse,
+            first: limit,
         },
         revalidate: 60 // Revalidate every 60 seconds
     });

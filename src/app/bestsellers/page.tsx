@@ -2,11 +2,11 @@ import ProductCard from '@/components/product-card';
 import { ScrollAnimation } from '@/components/scroll-animation';
 import { getCollectionProducts } from '@/lib/shopify';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function BestsellersPage() {
     // Fetch products from Shopify "bestsellers" collection
-    const bestsellers = await getCollectionProducts({ collection: 'bestsellers' });
+    const bestsellers = await getCollectionProducts({ collection: 'bestsellers', limit: 50 });
 
     // Map to frontend product shape
     const products = bestsellers.map(p => ({

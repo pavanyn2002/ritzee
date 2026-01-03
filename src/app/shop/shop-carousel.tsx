@@ -17,8 +17,8 @@ interface ShopCarouselProps {
 }
 
 export default function ShopCarousel({ products, isAlternate }: ShopCarouselProps) {
-    // Duplicate products to ensure smooth infinite loop even on wide screens
-    const carouselProducts = [...products, ...products, ...products];
+    // Use products as-is, no duplication
+    const carouselProducts = products;
 
     const plugin = useRef(
         Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })

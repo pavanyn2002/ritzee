@@ -13,7 +13,7 @@ export async function GET(request: Request) {
         }
 
         // Fetch products from Shopify with search query
-        const products = await getProducts({ query: query.trim() });
+        const products = await getProducts({ query: query.trim(), limit: 10 });
 
         // Map to simplified format for search results
         const searchResults = products.map((p) => ({

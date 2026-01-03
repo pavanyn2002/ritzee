@@ -15,9 +15,10 @@ import StickyAddToCart from '@/components/sticky-add-to-cart';
 const FALLBACK_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 export default function ProductClient({ product }: { product: any }) {
-    const { addToCart } = useCart();
+    const { addToCart, checkoutUrl } = useCart();
     const { toast } = useToast();
     const [selectedVariantId, setSelectedVariantId] = useState<string>('');
+    const [isBuying, setIsBuying] = useState(false);
 
     // Extract variants options if available
     const hasVariants = product.variants && product.variants.length > 0;
@@ -61,7 +62,7 @@ export default function ProductClient({ product }: { product: any }) {
                 description: "Choose a size/variant before adding to cart.",
                 variant: "destructive",
             });
-            return;
+            return false;
         }
 
         if (isSimpleProduct && !selectedOptionValue) {
@@ -70,7 +71,7 @@ export default function ProductClient({ product }: { product: any }) {
                 description: "Choose a size before adding to cart.",
                 variant: "destructive",
             });
-            return;
+            return false;
         }
 
         const variantToAdd = isSimpleProduct
@@ -85,6 +86,27 @@ export default function ProductClient({ product }: { product: any }) {
             title: "Added to cart",
             description: `${product.name} (${sizeLabel}) has been added to your cart.`,
         });
+
+        return true;
+    };
+
+    const handleBuyNow = async () => {
+        const added = handleAddToCart();
+        if (!added) return;
+
+        setIsBuying(true);
+        // Wait a moment for cart to update and get checkout URL
+        setTimeout(() => {
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl;
+            } else {
+                toast({
+                    title: "Preparing checkout...",
+                    description: "Please try again in a moment.",
+                });
+                setIsBuying(false);
+            }
+        }, 1000);
     };
 
     return (
@@ -146,7 +168,7 @@ export default function ProductClient({ product }: { product: any }) {
                                                 if (option.id) setSelectedVariantId(option.id);
                                             }}
                                             className={`min-w-[3rem] px-3 h-12 border-2 font-semibold transition-all hover:border-primary ${selectedOptionValue === option.value
-                                                ? 'bg-primary text-primary-foreground border-primary'
+                                                ? 'bg-primary text-primary-foreground border-primary shadow-[4px_4px_0px_0px_#8B00FF] -translate-x-[2px] -translate-y-[2px]'
                                                 : !option.available
                                                     ? 'opacity-50 cursor-not-allowed bg-muted border-border'
                                                     : 'border-border hover:bg-muted'
@@ -168,8 +190,13 @@ export default function ProductClient({ product }: { product: any }) {
                                 >
                                     <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
                                 </Button>
-                                <Button size="lg" variant="outline" className="font-bold text-base h-12 rounded-none border-2">
-                                    Buy Now
+                                <Button
+                                    size="lg"
+                                    className="font-bold text-base h-12 rounded-none border-2 border-[#8B00FF] bg-[#8B00FF] text-white hover:bg-[#7300D1]"
+                                    onClick={handleBuyNow}
+                                    disabled={isBuying}
+                                >
+                                    {isBuying ? 'Processing...' : 'Buy Now'}
                                 </Button>
                             </div>
                         </ScrollAnimation>

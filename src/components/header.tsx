@@ -121,6 +121,8 @@ ListItem.displayName = "ListItem"
 
 
 // Mobile Navigation Component using Accordion for better UX
+const mobileLinkStyles = "text-lg font-medium text-foreground/80 hover:text-primary transition-colors relative group py-3 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-[hsl(var(--accent))] hover:after:w-full after:transition-all after:duration-300";
+
 const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLinkClick?: () => void }) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -145,15 +147,15 @@ const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLink
 
   return (
     <nav className={className}>
-      <Link href="/" onClick={onLinkClick} className="text-lg font-medium py-2">Home</Link>
+      <Link href="/" onClick={onLinkClick} className={mobileLinkStyles}>Home</Link>
 
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="shop" className="border-b-0">
-          <AccordionTrigger className="text-lg font-medium py-2 hover:no-underline">Shop</AccordionTrigger>
+          <AccordionTrigger className="text-lg font-medium text-foreground/80 hover:text-primary py-3 hover:no-underline">Shop</AccordionTrigger>
           <AccordionContent>
-            <ul className="flex flex-col space-y-2 pl-4">
+            <ul className="flex flex-col space-y-1 pl-4 border-l-2 border-[hsl(var(--accent))]">
               <li>
-                <Link href="/shop" onClick={onLinkClick} className="block py-2 text-muted-foreground hover:text-primary">
+                <Link href="/shop" onClick={onLinkClick} className="block py-2 text-foreground/70 hover:text-primary transition-colors">
                   View All Collections
                 </Link>
               </li>
@@ -165,7 +167,7 @@ const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLink
                     <Link
                       href={`/shop?category=${encodeURIComponent(category)}`}
                       onClick={onLinkClick}
-                      className="block py-2 text-muted-foreground hover:text-primary"
+                      className="block py-2 text-foreground/70 hover:text-primary transition-colors"
                     >
                       {category}
                     </Link>
@@ -177,10 +179,10 @@ const MobileNavLinks = ({ className, onLinkClick }: { className?: string, onLink
         </AccordionItem>
       </Accordion>
 
-      <Link href="/bestsellers" onClick={onLinkClick} className="text-lg font-medium py-2">Bestsellers</Link>
-      <Link href="/blog" onClick={onLinkClick} className="text-lg font-medium py-2">Blog</Link>
-      <Link href="/about" onClick={onLinkClick} className="text-lg font-medium py-2">About</Link>
-      <Link href="/faq" onClick={onLinkClick} className="text-lg font-medium py-2">FAQ</Link>
+      <Link href="/bestsellers" onClick={onLinkClick} className={mobileLinkStyles}>Bestsellers</Link>
+      <Link href="/blog" onClick={onLinkClick} className={mobileLinkStyles}>Blog</Link>
+      <Link href="/about" onClick={onLinkClick} className={mobileLinkStyles}>About</Link>
+      <Link href="/faq" onClick={onLinkClick} className={mobileLinkStyles}>FAQ</Link>
     </nav>
   );
 };

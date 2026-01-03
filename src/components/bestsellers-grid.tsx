@@ -20,11 +20,11 @@ interface Product {
     category: string;
 }
 
-interface LatestDropsCarouselProps {
+interface BestsellersGridProps {
     products: Product[];
 }
 
-export default function LatestDropsCarousel({ products }: LatestDropsCarouselProps) {
+export default function BestsellersGrid({ products }: BestsellersGridProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
 
